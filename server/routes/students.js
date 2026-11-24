@@ -102,6 +102,22 @@ router.get('/:id', (req, res) => {
     const effectivePresent = present + late * 0.7;
     const rate = total > 0 ? Math.round((effectivePresent / total) * 100) : 100;
 
+    const leaveRequests = queryAll(`
+      SELECT * FROM leave_requests 
+      WHERE student_id = ? 
+      ORDER BY created_at DESC
+    `, [studentId]);
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    const todaySession = queryOne(`
+      SELECT s.*, a.status AS attendance_status, a.check_in_time, a.method
+      FROM sessions s
+      LEFT JOIN attendance a ON a.session_id = s.id AND a.student_id = ?
+      WHERE s.class_id = ? AND s.date = ?
+      ORDER BY s.id DESC
+      LIMIT 1
+    `, [studentId, student.class_id, todayStr]);
+
     res.json({
       success: true,
       data: {
@@ -115,7 +131,9 @@ router.get('/:id', (req, res) => {
           attendance_rate: rate,
           is_at_risk: rate < 75 && total >= 3
         },
-        records: attendanceRecords
+        records: attendanceRecords,
+        leave_requests: leaveRequests,
+        today_session: todaySession
       }
     });
   } catch (err) {

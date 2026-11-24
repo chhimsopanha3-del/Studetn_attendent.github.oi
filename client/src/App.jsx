@@ -7,18 +7,56 @@ import StudentsView from './components/StudentsView';
 import ClassesView from './components/ClassesView';
 import ReportsView from './components/ReportsView';
 import LeaveView from './components/LeaveView';
+import StudentPortalView from './components/StudentPortalView';
+import LoginModal from './components/LoginModal';
 import { StudentDetailModal, AddStudentModal, AddClassModal } from './components/Modals';
 import { api } from './api';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  // Current user state (persisted in localStorage or default to student)
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('edutrack_user');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    // Default initial user is Student Sopanha Chhem (USEA-2024-001)
+    return {
+      id: 1,
+      student_id: 'USEA-2024-001',
+      first_name: 'Sopanha',
+      last_name: 'Chhem',
+      full_name: 'Chhem Sopanha',
+      email: 'chhem.sopanha@usea.edu.kh',
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=SopanhaChhem&backgroundColor=b6e3f4,c0aede,d1d4f9',
+      gender: 'Male',
+      phone: '012-345-678',
+      class_id: 1,
+      class_name: 'Full-Stack Web Engineering',
+      class_code: 'SE-301',
+      department: 'Software Engineering',
+      room: 'Lab 302 (Building A)',
+      teacher_name: 'Dr. Robert Vance',
+      schedule_time: '08:00 AM - 11:15 AM',
+      role: 'student'
+    };
+  });
+
+  const [activeTab, setActiveTab] = useState(currentUser?.role === 'student' ? 'my-portal' : 'dashboard');
   const [preselectedClassId, setPreselectedClassId] = useState(null);
   const [selectedStudentId, setSelectedStudentId] = useState(null);
   const [isAddStudentOpen, setIsAddStudentOpen] = useState(false);
   const [isAddClassOpen, setIsAddClassOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [classesList, setClassesList] = useState([]);
   const [isReseeding, setIsReseeding] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+
+  // Persist user in localStorage
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('edutrack_user', JSON.stringify(currentUser));
+    }
+  }, [currentUser]);
 
   // Fetch available classes for modals
   async function loadClasses() {
@@ -39,6 +77,22 @@ export default function App() {
     setTimeout(() => setToastMessage(''), 3500);
   }
 
+  // Handle successful login
+  function handleLoginSuccess(user) {
+    setCurrentUser(user);
+    if (user.role === 'student') {
+      setActiveTab('my-portal');
+      showToast(`Welcome to your Student Portal, ${user.first_name}!`);
+    } else {
+      setActiveTab('dashboard');
+      showToast(`Signed in as Faculty Administrator: ${user.name}`);
+    }
+  }
+
+  function handleLogout() {
+    setIsLoginModalOpen(true);
+  }
+
   // Quick navigation from classes card to attendance marking
   function handleSelectClassForAttendance(classId) {
     setPreselectedClassId(classId);
@@ -57,7 +111,6 @@ export default function App() {
       if (res.success) {
         showToast('Database successfully re-seeded with realistic records!');
         loadClasses();
-        // Force refresh by toggling tab or reloading
         window.location.reload();
       } else {
         alert('Failed to reseed database');
@@ -77,6 +130,9 @@ export default function App() {
         setActiveTab={setActiveTab} 
         onReseed={handleReseed}
         isReseeding={isReseeding}
+        currentUser={currentUser}
+        onOpenLogin={() => setIsLoginModalOpen(true)}
+        onLogout={handleLogout}
       />
 
       {/* Main Container */}
@@ -89,7 +145,15 @@ export default function App() {
           </div>
         )}
 
-        {/* View Router */}
+        {/* Student Portal View */}
+        {activeTab === 'my-portal' && (
+          <StudentPortalView 
+            currentUser={currentUser}
+            onOpenCheckin={() => setActiveTab('qr')}
+          />
+        )}
+
+        {/* Faculty & Shared Views */}
         {activeTab === 'dashboard' && (
           <DashboardView 
             onNavigate={setActiveTab} 
@@ -134,13 +198,26 @@ export default function App() {
       <footer className="border-t border-slate-200 bg-white py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
           <p>© {new Date().getFullYear()} EduTrack Pro • University of South-East Asia (USEA)</p>
-          <p className="flex items-center space-x-1">
-            <span>Engineered with Node.js, Express, SQLite, React & Tailwind CSS</span>
-          </p>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setIsLoginModalOpen(true)}
+              className="font-medium text-indigo-600 hover:text-indigo-800 transition cursor-pointer"
+            >
+              Switch Account (Student / Faculty)
+            </button>
+            <span>•</span>
+            <span>Node.js 24 + Express 5 + SQLite + React 19</span>
+          </div>
         </div>
       </footer>
 
       {/* Modals */}
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+        onLoginSuccess={handleLoginSuccess}
+      />
+
       <StudentDetailModal 
         studentId={selectedStudentId} 
         onClose={() => setSelectedStudentId(null)} 

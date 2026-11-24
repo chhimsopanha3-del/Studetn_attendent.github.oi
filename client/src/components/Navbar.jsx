@@ -10,10 +10,23 @@ import {
   RefreshCw, 
   Clock,
   Sparkles,
-  School
+  School,
+  LogIn,
+  LogOut,
+  UserCheck,
+  ShieldCheck,
+  User
 } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab, onReseed, isReseeding }) {
+export default function Navbar({ 
+  activeTab, 
+  setActiveTab, 
+  onReseed, 
+  isReseeding, 
+  currentUser, 
+  onOpenLogin,
+  onLogout 
+}) {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -21,15 +34,26 @@ export default function Navbar({ activeTab, setActiveTab, onReseed, isReseeding 
     return () => clearInterval(timer);
   }, []);
 
-  const navItems = [
+  const isStudent = currentUser?.role === 'student';
+
+  // Navigation Items per role
+  const facultyNavItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'mark', label: 'Mark Attendance', icon: ClipboardCheck },
-    { id: 'qr', label: 'QR Check-in', icon: QrCode },
+    { id: 'qr', label: 'QR Station', icon: QrCode },
     { id: 'students', label: 'Students', icon: Users },
     { id: 'classes', label: 'Classes', icon: GraduationCap },
     { id: 'reports', label: 'Reports & Export', icon: FileSpreadsheet },
     { id: 'leave', label: 'Leave Requests', icon: CalendarClock },
   ];
+
+  const studentNavItems = [
+    { id: 'my-portal', label: 'My Student Portal', icon: GraduationCap },
+    { id: 'qr', label: 'QR Self Check-in', icon: QrCode },
+    { id: 'leave', label: 'My Leave Requests', icon: CalendarClock },
+  ];
+
+  const currentNavItems = isStudent ? studentNavItems : facultyNavItems;
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
@@ -37,38 +61,82 @@ export default function Navbar({ activeTab, setActiveTab, onReseed, isReseeding 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo & Brand */}
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
+          <div 
+            className="flex items-center space-x-3 cursor-pointer" 
+            onClick={() => setActiveTab(isStudent ? 'my-portal' : 'dashboard')}
+          >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-100">
               <School className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-lg text-slate-900 tracking-tight">EduTrack Pro</span>
-                <span className="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                  Enterprise
+                <span className={`text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full border ${
+                  isStudent 
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
+                    : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                }`}>
+                  {isStudent ? 'Student Portal' : 'Faculty Admin'}
                 </span>
               </div>
               <p className="text-xs text-slate-500 font-medium hidden sm:block">USEA Student Attendance Management System</p>
             </div>
           </div>
 
-          {/* Right Controls: Live Time & Seed Data Action */}
-          <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center space-x-2 text-xs font-medium text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-lg border border-slate-200/60">
+          {/* Right Controls: Live User Profile & Actions */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Live Time */}
+            <div className="hidden lg:flex items-center space-x-2 text-xs font-medium text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-lg border border-slate-200/60">
               <Clock className="w-3.5 h-3.5 text-slate-500" />
-              <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
-              <span className="text-slate-300">|</span>
-              <span>{time.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</span>
+              <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
 
+            {/* Current User Pill & Switcher */}
+            {currentUser ? (
+              <div className="flex items-center space-x-2 bg-slate-50 border border-slate-200 p-1 pl-2 rounded-xl">
+                {currentUser.avatar ? (
+                  <img src={currentUser.avatar} alt="" className="w-7 h-7 rounded-lg border border-slate-300 bg-white" />
+                ) : (
+                  <div className="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">
+                    <User className="w-4 h-4" />
+                  </div>
+                )}
+                
+                <div className="hidden sm:block text-left pr-2">
+                  <span className="text-xs font-bold text-slate-900 block leading-tight">
+                    {currentUser.full_name || currentUser.name}
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-mono block">
+                    {currentUser.student_id ? `${currentUser.student_id}` : 'Faculty Dean'}
+                  </span>
+                </div>
+
+                <button
+                  onClick={onOpenLogin}
+                  title="Switch User / Login"
+                  className="px-2 py-1 bg-white hover:bg-slate-100 text-indigo-600 hover:text-indigo-800 text-xs font-semibold rounded-lg border border-slate-200 transition cursor-pointer"
+                >
+                  Switch
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={onOpenLogin}
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm transition cursor-pointer"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                <span>Sign In</span>
+              </button>
+            )}
+
+            {/* Reset Demo Data Button */}
             <button
               onClick={onReseed}
               disabled={isReseeding}
-              title="Reset sample students, classes, and 30-day historical records"
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-indigo-600 transition shadow-2xs disabled:opacity-60"
+              title="Reset sample data"
+              className="p-2 text-slate-500 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:text-indigo-600 transition shadow-2xs disabled:opacity-60 cursor-pointer"
             >
-              <RefreshCw className={`w-3.5 h-3.5 text-slate-500 ${isReseeding ? 'animate-spin text-indigo-600' : ''}`} />
-              <span className="hidden sm:inline">Reset Demo Data</span>
+              <RefreshCw className={`w-3.5 h-3.5 ${isReseeding ? 'animate-spin text-indigo-600' : ''}`} />
             </button>
           </div>
         </div>
@@ -77,7 +145,7 @@ export default function Navbar({ activeTab, setActiveTab, onReseed, isReseeding 
       {/* Navigation Tabs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-100 overflow-x-auto scrollbar-none">
         <nav className="flex space-x-1 py-1">
-          {navItems.map((item) => {
+          {currentNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
             return (

@@ -1,6 +1,21 @@
 const API_BASE = '/api';
 
 export const api = {
+  // Auth
+  studentLogin: (studentId, password = '') => fetch(`${API_BASE}/auth/student-login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ student_id: studentId, password })
+  }).then(r => r.json()),
+
+  facultyLogin: (email, password = '') => fetch(`${API_BASE}/auth/faculty-login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  }).then(r => r.json()),
+
+  getDemoStudents: () => fetch(`${API_BASE}/auth/demo-students`).then(r => r.json()),
+
   // Analytics
   getOverview: () => fetch(`${API_BASE}/analytics/overview`).then(r => r.json()),
   getTrends: (days = 14) => fetch(`${API_BASE}/analytics/trends?days=${days}`).then(r => r.json()),

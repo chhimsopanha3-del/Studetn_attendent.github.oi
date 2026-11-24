@@ -8,6 +8,7 @@ const studentsRouter = require('./routes/students');
 const attendanceRouter = require('./routes/attendance');
 const analyticsRouter = require('./routes/analytics');
 const leaveRouter = require('./routes/leave');
+const authRouter = require('./routes/auth');
 const { seedDatabase } = require('./db/seed');
 
 const app = express();
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 });
 
 // API Routes
+app.use('/api/auth', authRouter);
 app.use('/api/classes', classesRouter);
 app.use('/api/students', studentsRouter);
 app.use('/api/attendance', attendanceRouter);
