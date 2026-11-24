@@ -28,8 +28,10 @@ import {
   Cell 
 } from 'recharts';
 import { api } from '../api';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function DashboardView({ onNavigate, onSelectStudent }) {
+  const { t } = useLanguage();
   const [overview, setOverview] = useState(null);
   const [trends, setTrends] = useState([]);
   const [classesComparison, setClassesComparison] = useState([]);
@@ -66,7 +68,7 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center space-y-3">
           <div className="w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-          <p className="text-sm text-slate-500 font-medium">Loading Attendance Dashboard...</p>
+          <p className="text-sm text-slate-500 font-medium">Loading...</p>
         </div>
       </div>
     );
@@ -84,11 +86,11 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
         </div>
         <div className="relative z-10 max-w-2xl">
           <span className="inline-block px-2.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 text-xs font-semibold mb-2 backdrop-blur-xs">
-            Academic Term 2024-2025
+            {t('academicTerm')}
           </span>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Student Attendance Analytics</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t('heroTitle')}</h1>
           <p className="text-slate-300 text-sm mt-1">
-            Real-time tracking, automated absence warnings, and QR check-in monitoring across all university classes.
+            {t('heroDesc')}
           </p>
 
           <div className="flex flex-wrap gap-3 mt-5">
@@ -97,14 +99,14 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
               className="inline-flex items-center space-x-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-medium rounded-xl transition shadow-md shadow-indigo-900/50 cursor-pointer"
             >
               <ClipboardCheck className="w-4 h-4" />
-              <span>Mark Today's Attendance</span>
+              <span>{t('markTodayBtn')}</span>
             </button>
             <button
               onClick={() => onNavigate('qr')}
               className="inline-flex items-center space-x-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-medium rounded-xl backdrop-blur-xs transition border border-white/15 cursor-pointer"
             >
               <QrCode className="w-4 h-4" />
-              <span>Open QR Station</span>
+              <span>{t('openQrStationBtn')}</span>
             </button>
             <a
               href={api.getExportCsvUrl()}
@@ -113,7 +115,7 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
               className="inline-flex items-center space-x-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-medium rounded-xl backdrop-blur-xs transition border border-white/15 cursor-pointer"
             >
               <Download className="w-4 h-4" />
-              <span>Export CSV</span>
+              <span>{t('exportCsvBtn')}</span>
             </a>
           </div>
         </div>
@@ -124,7 +126,7 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
         {/* Total Students */}
         <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-xs transition">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Active Students</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{t('activeStudents')}</p>
             <div className="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
               <Users className="w-5 h-5" />
             </div>
@@ -132,16 +134,16 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
           <div className="mt-3 flex items-baseline justify-between">
             <h3 className="text-2xl font-bold text-slate-900">{total_students}</h3>
             <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-              Active Enrolled
+              {t('activeEnrolled')}
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-2">Across 4 university departments</p>
+          <p className="text-xs text-slate-500 mt-2">{t('acrossDepts')}</p>
         </div>
 
         {/* Total Classes */}
         <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-xs transition">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Classes & Sections</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{t('classesAndSections')}</p>
             <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
               <GraduationCap className="w-5 h-5" />
             </div>
@@ -149,16 +151,16 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
           <div className="mt-3 flex items-baseline justify-between">
             <h3 className="text-2xl font-bold text-slate-900">{total_classes}</h3>
             <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-              Active Courses
+              {t('activeCourses')}
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-2">Daily scheduled sessions</p>
+          <p className="text-xs text-slate-500 mt-2">{t('dailyScheduled')}</p>
         </div>
 
         {/* Overall Attendance Rate */}
         <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-xs transition">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Average Attendance</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{t('averageAttendance')}</p>
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
               overall_attendance_rate >= 80 ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
             }`}>
@@ -172,7 +174,7 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
               {overall_attendance_rate}%
             </h3>
             <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">
-              Past 30 Days
+              {t('past30Days')}
             </span>
           </div>
           <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
@@ -186,7 +188,7 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
         {/* At-Risk Students */}
         <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-xs transition">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">At-Risk Students</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{t('atRiskStudents')}</p>
             <div className="w-9 h-9 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
               <AlertTriangle className="w-5 h-5" />
             </div>
@@ -194,45 +196,45 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
           <div className="mt-3 flex items-baseline justify-between">
             <h3 className="text-2xl font-bold text-rose-600">{at_risk_count}</h3>
             <span className="text-xs font-medium text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
-              Rate &lt; 75%
+              {t('atRisk')}
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-2">Requires academic intervention</p>
+          <p className="text-xs text-slate-500 mt-2">{t('requiresIntervention')}</p>
         </div>
       </div>
 
       {/* Status Breakdown Bar */}
       <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">System Record Distribution</span>
-          <span className="text-xs text-slate-400">Total Recorded: {totalBreakdown.toLocaleString()} entries</span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">{t('recordDistribution')}</span>
+          <span className="text-xs text-slate-400">{t('totalRecorded')}: {totalBreakdown.toLocaleString()}</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-3">
           <div className="flex items-center space-x-3 p-2 rounded-lg bg-emerald-50/50 border border-emerald-100">
             <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Present</p>
+              <p className="text-xs text-slate-500 font-medium">{t('present')}</p>
               <p className="text-sm font-bold text-slate-900">{breakdown.present} ({Math.round(breakdown.present / totalBreakdown * 100)}%)</p>
             </div>
           </div>
           <div className="flex items-center space-x-3 p-2 rounded-lg bg-amber-50/50 border border-amber-100">
             <div className="w-3 h-3 rounded-full bg-amber-500"></div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Late</p>
+              <p className="text-xs text-slate-500 font-medium">{t('late')}</p>
               <p className="text-sm font-bold text-slate-900">{breakdown.late} ({Math.round(breakdown.late / totalBreakdown * 100)}%)</p>
             </div>
           </div>
           <div className="flex items-center space-x-3 p-2 rounded-lg bg-rose-50/50 border border-rose-100">
             <div className="w-3 h-3 rounded-full bg-rose-500"></div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Absent</p>
+              <p className="text-xs text-slate-500 font-medium">{t('absent')}</p>
               <p className="text-sm font-bold text-slate-900">{breakdown.absent} ({Math.round(breakdown.absent / totalBreakdown * 100)}%)</p>
             </div>
           </div>
           <div className="flex items-center space-x-3 p-2 rounded-lg bg-blue-50/50 border border-blue-100">
             <div className="w-3 h-3 rounded-full bg-blue-500"></div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Excused</p>
+              <p className="text-xs text-slate-500 font-medium">{t('excused')}</p>
               <p className="text-sm font-bold text-slate-900">{breakdown.excused} ({Math.round(breakdown.excused / totalBreakdown * 100)}%)</p>
             </div>
           </div>
@@ -245,12 +247,12 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
         <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="font-bold text-slate-900 text-sm sm:text-base">Daily Attendance Trend</h3>
-              <p className="text-xs text-slate-500">Timeline tracking percentage of active attendance</p>
+              <h3 className="font-bold text-slate-900 text-sm sm:text-base">{t('dailyTrend')}</h3>
+              <p className="text-xs text-slate-500">{t('dailyTrendDesc')}</p>
             </div>
             <span className="flex items-center space-x-1 text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md">
               <TrendingUp className="w-3.5 h-3.5" />
-              <span>Past 15 Sessions</span>
+              <span>{t('past15Sessions')}</span>
             </span>
           </div>
 
@@ -296,14 +298,14 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
         <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="font-bold text-slate-900 text-sm sm:text-base">Class Performance Comparison</h3>
-              <p className="text-xs text-slate-500">Average attendance percentage by academic section</p>
+              <h3 className="font-bold text-slate-900 text-sm sm:text-base">{t('classPerformance')}</h3>
+              <p className="text-xs text-slate-500">{t('classPerformanceDesc')}</p>
             </div>
             <button 
               onClick={() => onNavigate('classes')}
               className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 flex items-center space-x-1"
             >
-              <span>View All</span>
+              <span>{t('viewAll')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -338,32 +340,32 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
           <div>
             <div className="flex items-center space-x-2">
               <AlertTriangle className="w-4 h-4 text-rose-500" />
-              <h3 className="font-bold text-slate-900 text-sm sm:text-base">Students Requiring Attention (&lt; 75% Attendance)</h3>
+              <h3 className="font-bold text-slate-900 text-sm sm:text-base">{t('studentsNeedingAttention')}</h3>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">Automated detection of students exceeding allowable unexcused absence thresholds</p>
+            <p className="text-xs text-slate-500 mt-0.5">{t('studentsNeedingAttentionDesc')}</p>
           </div>
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 self-start sm:self-auto">
-            {atRiskList.length} At-Risk Students
+            {atRiskList.length} {t('atRiskStudents')}
           </span>
         </div>
 
         {atRiskList.length === 0 ? (
           <div className="p-8 text-center">
             <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
-            <h4 className="text-sm font-semibold text-slate-900">All students are in good standing!</h4>
-            <p className="text-xs text-slate-500">Every student currently maintains &gt;= 75% attendance rate.</p>
+            <h4 className="text-sm font-semibold text-slate-900">{t('allGoodStanding')}</h4>
+            <p className="text-xs text-slate-500">{t('allGoodStandingDesc')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
               <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
                 <tr>
-                  <th className="py-3 px-4">Student</th>
-                  <th className="py-3 px-4">Student ID</th>
-                  <th className="py-3 px-4">Class</th>
-                  <th className="py-3 px-4 text-center">Absences</th>
-                  <th className="py-3 px-4">Attendance Rate</th>
-                  <th className="py-3 px-4 text-right">Action</th>
+                  <th className="py-3 px-4">{t('studentCol')}</th>
+                  <th className="py-3 px-4">{t('studentIdCol')}</th>
+                  <th className="py-3 px-4">{t('classCol')}</th>
+                  <th className="py-3 px-4 text-center">{t('absencesCol')}</th>
+                  <th className="py-3 px-4">{t('rateCol')}</th>
+                  <th className="py-3 px-4 text-right">{t('actionCol')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -389,7 +391,7 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
                     </td>
                     <td className="py-3 px-4 text-center">
                       <span className="inline-block px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 font-bold text-xs border border-rose-200">
-                        {st.absent_count} absent
+                        {st.absent_count} {t('absent')}
                       </span>
                     </td>
                     <td className="py-3 px-4">
@@ -408,7 +410,7 @@ export default function DashboardView({ onNavigate, onSelectStudent }) {
                         onClick={() => onSelectStudent(st.id)}
                         className="inline-flex items-center space-x-1 text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-md transition cursor-pointer"
                       >
-                        <span>History</span>
+                        <span>{t('historyBtn')}</span>
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </button>
                     </td>

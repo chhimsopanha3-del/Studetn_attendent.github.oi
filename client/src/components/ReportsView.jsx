@@ -12,8 +12,10 @@ import {
   Search
 } from 'lucide-react';
 import { api } from '../api';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function ReportsView() {
+  const { t } = useLanguage();
   const [classes, setClasses] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState('');
   const [loading, setLoading] = useState(false);
@@ -41,10 +43,10 @@ export default function ReportsView() {
             <span className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
               <FileSpreadsheet className="w-5 h-5" />
             </span>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Reports & Compliance Export</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">{t('reportsTitle')}</h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Generate audit-ready attendance sheets and export structured CSV records for university administration.
+            {t('reportsDesc')}
           </p>
         </div>
 
@@ -55,7 +57,7 @@ export default function ReportsView() {
           className="inline-flex items-center space-x-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-md shadow-emerald-100 transition cursor-pointer self-start sm:self-auto"
         >
           <Download className="w-4 h-4" />
-          <span>Download CSV Report</span>
+          <span>{t('downloadCsvBtn')}</span>
         </a>
       </div>
 
@@ -63,18 +65,18 @@ export default function ReportsView() {
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs">
         <h3 className="font-bold text-slate-900 text-sm sm:text-base mb-4 flex items-center space-x-2">
           <Filter className="w-4 h-4 text-indigo-600" />
-          <span>Export Parameters</span>
+          <span>{t('exportParamsTitle')}</span>
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 mb-1.5">Filter by Class</label>
+            <label className="block text-xs font-semibold uppercase text-slate-500 mb-1.5">{t('filterByClassLabel')}</label>
             <select
               value={selectedClassId}
               onChange={(e) => setSelectedClassId(e.target.value)}
               className="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             >
-              <option value="">All Classes & Sections (Entire University)</option>
+              <option value="">{t('allClassesOption')}</option>
               {classes.map(c => (
                 <option key={c.id} value={c.id}>{c.code} - {c.name}</option>
               ))}
@@ -82,7 +84,7 @@ export default function ReportsView() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 mb-1.5">Export Format</label>
+            <label className="block text-xs font-semibold uppercase text-slate-500 mb-1.5">{t('exportFormatLabel')}</label>
             <div className="flex items-center space-x-3 mt-1.5">
               <span className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200">
                 <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
@@ -103,7 +105,7 @@ export default function ReportsView() {
             className="inline-flex items-center space-x-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-sm transition"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>Generate & Download</span>
+            <span>{t('generateDownloadBtn')}</span>
           </a>
         </div>
       </div>

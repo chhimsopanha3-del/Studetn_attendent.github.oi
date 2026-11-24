@@ -15,8 +15,10 @@ import {
   LogOut,
   UserCheck,
   ShieldCheck,
-  User
+  User,
+  Languages
 } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function Navbar({ 
   activeTab, 
@@ -27,6 +29,7 @@ export default function Navbar({
   onOpenLogin,
   onLogout 
 }) {
+  const { lang, toggleLanguage, t } = useLanguage();
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -36,21 +39,21 @@ export default function Navbar({
 
   const isStudent = currentUser?.role === 'student';
 
-  // Navigation Items per role
+  // Navigation Items per role using localized labels
   const facultyNavItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'mark', label: 'Mark Attendance', icon: ClipboardCheck },
-    { id: 'qr', label: 'QR Station', icon: QrCode },
-    { id: 'students', label: 'Students', icon: Users },
-    { id: 'classes', label: 'Classes', icon: GraduationCap },
-    { id: 'reports', label: 'Reports & Export', icon: FileSpreadsheet },
-    { id: 'leave', label: 'Leave Requests', icon: CalendarClock },
+    { id: 'dashboard', label: t('dashboard'), icon: LayoutDashboard },
+    { id: 'mark', label: t('markAttendance'), icon: ClipboardCheck },
+    { id: 'qr', label: t('qrStation'), icon: QrCode },
+    { id: 'students', label: t('students'), icon: Users },
+    { id: 'classes', label: t('classes'), icon: GraduationCap },
+    { id: 'reports', label: t('reports'), icon: FileSpreadsheet },
+    { id: 'leave', label: t('leaveRequests'), icon: CalendarClock },
   ];
 
   const studentNavItems = [
-    { id: 'my-portal', label: 'My Student Portal', icon: GraduationCap },
-    { id: 'qr', label: 'QR Self Check-in', icon: QrCode },
-    { id: 'leave', label: 'My Leave Requests', icon: CalendarClock },
+    { id: 'my-portal', label: t('myPortal'), icon: GraduationCap },
+    { id: 'qr', label: t('qrSelfCheckin'), icon: QrCode },
+    { id: 'leave', label: t('leaveRequests'), icon: CalendarClock },
   ];
 
   const currentNavItems = isStudent ? studentNavItems : facultyNavItems;
@@ -70,21 +73,31 @@ export default function Navbar({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg text-slate-900 tracking-tight">EduTrack Pro</span>
+                <span className="font-bold text-lg text-slate-900 tracking-tight">{t('brandTitle')}</span>
                 <span className={`text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full border ${
                   isStudent 
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
                     : 'bg-indigo-50 text-indigo-700 border-indigo-200'
                 }`}>
-                  {isStudent ? 'Student Portal' : 'Faculty Admin'}
+                  {isStudent ? t('studentPortalBadge') : t('facultyAdminBadge')}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium hidden sm:block">USEA Student Attendance Management System</p>
+              <p className="text-xs text-slate-500 font-medium hidden sm:block">{t('brandSubtitle')}</p>
             </div>
           </div>
 
-          {/* Right Controls: Live User Profile & Actions */}
+          {/* Right Controls: Language Selector, User Profile & Actions */}
           <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Khmer / English Toggle Button */}
+            <button
+              onClick={toggleLanguage}
+              title={lang === 'km' ? 'Switch to English' : 'ប្តូរជាភាសាខ្មែរ'}
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800 transition cursor-pointer shadow-2xs"
+            >
+              <Languages className="w-3.5 h-3.5 text-indigo-600" />
+              <span>{lang === 'km' ? '🇰🇭 ខ្មែរ' : '🇬🇧 EN'}</span>
+            </button>
+
             {/* Live Time */}
             <div className="hidden lg:flex items-center space-x-2 text-xs font-medium text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-lg border border-slate-200/60">
               <Clock className="w-3.5 h-3.5 text-slate-500" />
@@ -116,7 +129,7 @@ export default function Navbar({
                   title="Switch User / Login"
                   className="px-2 py-1 bg-white hover:bg-slate-100 text-indigo-600 hover:text-indigo-800 text-xs font-semibold rounded-lg border border-slate-200 transition cursor-pointer"
                 >
-                  Switch
+                  {t('switchAccount')}
                 </button>
               </div>
             ) : (
@@ -125,7 +138,7 @@ export default function Navbar({
                 className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm transition cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
-                <span>Sign In</span>
+                <span>{t('signIn')}</span>
               </button>
             )}
 
@@ -133,7 +146,7 @@ export default function Navbar({
             <button
               onClick={onReseed}
               disabled={isReseeding}
-              title="Reset sample data"
+              title={t('resetDemo')}
               className="p-2 text-slate-500 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:text-indigo-600 transition shadow-2xs disabled:opacity-60 cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isReseeding ? 'animate-spin text-indigo-600' : ''}`} />

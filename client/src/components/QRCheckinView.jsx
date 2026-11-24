@@ -12,8 +12,10 @@ import {
   GraduationCap
 } from 'lucide-react';
 import { api } from '../api';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function QRCheckinView() {
+  const { t } = useLanguage();
   const [classes, setClasses] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState('');
   const [sessionType, setSessionType] = useState('Morning');
@@ -52,7 +54,6 @@ export default function QRCheckinView() {
       const token = `ATT-${code}-${date}-${sessionType}`;
       setQrToken(token);
 
-      // Load session sheet to see current checked-in students
       const res = await api.getSessionSheet(selectedClassId, date, sessionType);
       if (res.success) {
         setClassStudents(res.data.students);
@@ -81,11 +82,11 @@ export default function QRCheckinView() {
           time: res.check_in_time || 'Just now'
         });
         setStudentIdInput('');
-        loadClassAndSession(); // refresh live list
+        loadClassAndSession();
       } else {
         setCheckinStatus({
           type: 'error',
-          message: res.error || 'Check-in failed. Please verify student ID.'
+          message: res.error || 'Check-in failed'
         });
       }
     } catch (err) {
@@ -109,10 +110,10 @@ export default function QRCheckinView() {
             <span className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
               <QrCode className="w-5 h-5" />
             </span>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">QR Code Self Check-in Station</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">{t('qrHeaderTitle')}</h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Display this QR code in class or project it on screen for fast, contactless student attendance.
+            {t('qrHeaderDesc')}
           </p>
         </div>
 
@@ -133,8 +134,8 @@ export default function QRCheckinView() {
             onChange={(e) => setSessionType(e.target.value)}
             className="text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="Morning">Morning</option>
-            <option value="Afternoon">Afternoon</option>
+            <option value="Morning">{t('morningSlot').slice(0, 9)}</option>
+            <option value="Afternoon">{t('afternoonSlot').slice(0, 10)}</option>
           </select>
         </div>
       </div>
@@ -145,21 +146,19 @@ export default function QRCheckinView() {
         <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-md flex flex-col items-center text-center">
           <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold mb-4 border border-emerald-200 animate-pulse">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span>Live Session Active</span>
+            <span>{t('liveSessionActive')}</span>
           </div>
 
           <h2 className="text-xl font-bold text-slate-900">
             {selectedClass?.name || 'Class Attendance'}
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            {selectedClass?.code} • {selectedClass?.room} • Teacher: {selectedClass?.teacher_name}
+            {selectedClass?.code} • {selectedClass?.room} • {t('instructorLabel')}: {selectedClass?.teacher_name}
           </p>
 
           {/* High Visibility Dynamic QR Code Card */}
           <div className="my-6 p-6 bg-white rounded-2xl border-4 border-slate-900 shadow-xl inline-block relative group">
-            {/* SVG Visual QR Matrix Representation */}
             <div className="w-56 h-56 bg-slate-950 p-3 rounded-xl flex flex-col justify-between items-center text-white relative">
-              {/* Corner Position Detection Patterns */}
               <div className="w-full flex justify-between">
                 <div className="w-12 h-12 border-4 border-white bg-slate-950 p-1.5 flex items-center justify-center">
                   <div className="w-5 h-5 bg-white"></div>
@@ -169,7 +168,6 @@ export default function QRCheckinView() {
                 </div>
               </div>
 
-              {/* Center Logo & Pattern */}
               <div className="flex flex-col items-center justify-center my-auto space-y-1">
                 <div className="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center shadow-lg">
                   <GraduationCap className="w-6 h-6 text-white" />
@@ -179,7 +177,6 @@ export default function QRCheckinView() {
                 </span>
               </div>
 
-              {/* Bottom Pattern */}
               <div className="w-full flex justify-between items-end">
                 <div className="w-12 h-12 border-4 border-white bg-slate-950 p-1.5 flex items-center justify-center">
                   <div className="w-5 h-5 bg-white"></div>
@@ -193,23 +190,22 @@ export default function QRCheckinView() {
             </div>
 
             <div className="mt-4 pt-3 border-t border-slate-100 text-center">
-              <span className="text-[11px] font-mono text-slate-500 block">Session Token:</span>
+              <span className="text-[11px] font-mono text-slate-500 block">{t('sessionToken')}:</span>
               <span className="text-xs font-mono font-bold text-slate-900">{qrToken}</span>
             </div>
           </div>
 
           <p className="text-xs text-slate-500 max-w-sm">
-            Scan using phone camera or type your Student ID in the check-in station beside.
+            {t('scanInstructions')}
           </p>
         </div>
 
-        {/* Right: Student Self Check-in Kiosk / Simulator */}
+        {/* Right: Student Self Check-in Kiosk */}
         <div className="lg:col-span-5 space-y-6">
-          {/* Quick Check-in Box */}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs">
             <div className="flex items-center space-x-2 pb-3 border-b border-slate-100">
               <Smartphone className="w-5 h-5 text-indigo-600" />
-              <h3 className="font-bold text-slate-900 text-sm sm:text-base">Student Self Check-in Terminal</h3>
+              <h3 className="font-bold text-slate-900 text-sm sm:text-base">{t('terminalTitle')}</h3>
             </div>
 
             <form 
@@ -221,7 +217,7 @@ export default function QRCheckinView() {
             >
               <div>
                 <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">
-                  Enter Student ID or Scan Barcode
+                  {t('enterStudentIdLabel')}
                 </label>
                 <div className="flex space-x-2">
                   <input
@@ -236,12 +232,11 @@ export default function QRCheckinView() {
                     disabled={loading || !studentIdInput.trim()}
                     className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-sm transition disabled:opacity-50 cursor-pointer"
                   >
-                    {loading ? 'Checking...' : 'Check In'}
+                    {loading ? t('checkingBtn') : t('checkInBtn')}
                   </button>
                 </div>
               </div>
 
-              {/* Status Banner */}
               {checkinStatus && (
                 <div className={`p-3.5 rounded-xl text-xs flex items-start space-x-2.5 border ${
                   checkinStatus.type === 'success' 
@@ -264,10 +259,9 @@ export default function QRCheckinView() {
                 </div>
               )}
 
-              {/* Quick Check-in Chips for Testing Demo */}
               <div className="pt-2">
                 <span className="text-[11px] font-semibold uppercase text-slate-400 block mb-2">
-                  1-Click Test Simulation (Click any student):
+                  {t('clickSimulate')}
                 </span>
                 <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-1 bg-slate-50 rounded-lg border border-slate-200">
                   {classStudents.map(st => {
@@ -293,21 +287,20 @@ export default function QRCheckinView() {
             </form>
           </div>
 
-          {/* Live Check-in Feed */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center space-x-2">
                 <UserCheck className="w-4 h-4 text-emerald-600" />
-                <h4 className="font-bold text-slate-900 text-sm">Real-time Check-ins</h4>
+                <h4 className="font-bold text-slate-900 text-sm">{t('realtimeCheckins')}</h4>
               </div>
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                {recentCheckins.length} Present
+                {recentCheckins.length} {t('present')}
               </span>
             </div>
 
             <div className="mt-3 divide-y divide-slate-100 max-h-56 overflow-y-auto">
               {recentCheckins.length === 0 ? (
-                <p className="text-xs text-slate-400 text-center py-4">No check-ins yet for this session.</p>
+                <p className="text-xs text-slate-400 text-center py-4">{t('noCheckinsYet')}</p>
               ) : (
                 recentCheckins.map((s, idx) => (
                   <div key={idx} className="py-2 flex items-center justify-between text-xs">
@@ -319,7 +312,7 @@ export default function QRCheckinView() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <span className="text-emerald-600 font-semibold text-[11px]">Present</span>
+                      <span className="text-emerald-600 font-semibold text-[11px]">{t('present')}</span>
                       <span className="text-slate-400 block text-[10px]">{s.check_in_time || '08:00 AM'}</span>
                     </div>
                   </div>

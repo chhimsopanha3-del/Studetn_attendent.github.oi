@@ -17,8 +17,10 @@ import {
   Info
 } from 'lucide-react';
 import { api } from '../api';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function StudentPortalView({ currentUser, onOpenCheckin }) {
+  const { t } = useLanguage();
   const [studentData, setStudentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quickCode, setQuickCode] = useState('');
@@ -119,13 +121,13 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center space-y-3">
           <div className="w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-          <p className="text-sm text-slate-500 font-medium">Loading your student portal...</p>
+          <p className="text-sm text-slate-500 font-medium">Loading...</p>
         </div>
       </div>
     );
   }
 
-  const { stats, records, leave_requests, today_session } = studentData;
+  const { stats, records, leave_requests } = studentData;
   const isAtRisk = stats.attendance_rate < 75;
 
   return (
@@ -153,7 +155,7 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-                Welcome back, {currentUser.first_name}!
+                {t('welcomeBack')}, {currentUser.first_name}!
               </h1>
               <p className="text-xs sm:text-sm text-slate-300 mt-1">
                 {currentUser.department} • University of South-East Asia (USEA)
@@ -164,7 +166,7 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
           {/* Quick Rate Pill in Banner */}
           <div className="bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/15 flex items-center space-x-4 self-start md:self-auto">
             <div>
-              <span className="text-xs text-slate-300 block font-medium">Overall Attendance</span>
+              <span className="text-xs text-slate-300 block font-medium">{t('overallAttendanceLabel')}</span>
               <span className={`text-3xl font-extrabold ${
                 !isAtRisk ? 'text-emerald-400' : 'text-rose-400'
               }`}>
@@ -173,13 +175,13 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
             </div>
             <div className="h-10 w-px bg-white/20"></div>
             <div>
-              <span className="text-[11px] text-slate-300 block">Status Standing:</span>
+              <span className="text-[11px] text-slate-300 block">{t('statusStandingLabel')}</span>
               <span className={`text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full inline-block mt-0.5 ${
                 !isAtRisk 
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' 
                   : 'bg-rose-500/20 text-rose-300 border border-rose-500/30 animate-pulse'
               }`}>
-                {!isAtRisk ? 'Good Standing' : 'At-Risk (<75%)'}
+                {!isAtRisk ? t('goodStanding') : t('atRisk')}
               </span>
             </div>
           </div>
@@ -190,29 +192,29 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase text-slate-500">Present</span>
+            <span className="text-xs font-semibold uppercase text-slate-500">{t('present')}</span>
             <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
           <h3 className="text-2xl font-bold text-slate-900 mt-2">{stats.present_count}</h3>
-          <p className="text-[11px] text-slate-400 mt-0.5">Classes attended on time</p>
+          <p className="text-[11px] text-slate-400 mt-0.5">{t('classesAttendedOnTime')}</p>
         </div>
 
         <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase text-slate-500">Late</span>
+            <span className="text-xs font-semibold uppercase text-slate-500">{t('late')}</span>
             <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
               <Clock className="w-4 h-4" />
             </div>
           </div>
           <h3 className="text-2xl font-bold text-slate-900 mt-2">{stats.late_count}</h3>
-          <p className="text-[11px] text-slate-400 mt-0.5">Tardy arrivals</p>
+          <p className="text-[11px] text-slate-400 mt-0.5">{t('tardyArrivals')}</p>
         </div>
 
         <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase text-slate-500">Absent</span>
+            <span className="text-xs font-semibold uppercase text-slate-500">{t('absent')}</span>
             <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
               <XCircle className="w-4 h-4" />
             </div>
@@ -220,18 +222,18 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
           <h3 className={`text-2xl font-bold ${stats.absent_count > 2 ? 'text-rose-600' : 'text-slate-900'} mt-2`}>
             {stats.absent_count}
           </h3>
-          <p className="text-[11px] text-slate-400 mt-0.5">Unexcused misses</p>
+          <p className="text-[11px] text-slate-400 mt-0.5">{t('unexcusedMisses')}</p>
         </div>
 
         <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase text-slate-500">Excused</span>
+            <span className="text-xs font-semibold uppercase text-slate-500">{t('excused')}</span>
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
               <FileText className="w-4 h-4" />
             </div>
           </div>
           <h3 className="text-2xl font-bold text-slate-900 mt-2">{stats.excused_count}</h3>
-          <p className="text-[11px] text-slate-400 mt-0.5">Approved medical/leave</p>
+          <p className="text-[11px] text-slate-400 mt-0.5">{t('approvedLeaves')}</p>
         </div>
       </div>
 
@@ -246,13 +248,13 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
                   <QrCode className="w-5 h-5" />
                 </span>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">Today's Class Self Check-in</h3>
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">{t('todaySelfCheckinTitle')}</h3>
                   <p className="text-xs text-slate-500">{new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })}</p>
                 </div>
               </div>
 
               <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                Morning Slot
+                {t('morningSlot').slice(0, 9)}
               </span>
             </div>
 
@@ -271,7 +273,7 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
               {/* Instant Check-in Action */}
               <form onSubmit={handleQuickCheckin} className="mt-4 space-y-2">
                 <label className="block text-xs font-semibold text-slate-600">
-                  Enter Session QR Token or 1-Click Check In:
+                  {t('enterQrLabel')}
                 </label>
                 <div className="flex space-x-2">
                   <input
@@ -286,7 +288,7 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
                     disabled={submittingCheckin}
                     className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm transition disabled:opacity-50 cursor-pointer flex items-center space-x-1"
                   >
-                    <span>{submittingCheckin ? 'Verifying...' : 'Check In'}</span>
+                    <span>{submittingCheckin ? t('verifyingBtn') : t('checkInBtn')}</span>
                   </button>
                 </div>
               </form>
@@ -309,7 +311,7 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
           </div>
 
           <p className="text-xs text-slate-400 mt-4 text-center">
-            You can also scan the projector screen in class using your smartphone camera.
+            {t('scanInstructions')}
           </p>
         </div>
 
@@ -317,13 +319,13 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
         <div className="lg:col-span-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-sm sm:text-base">Course Information</h3>
+              <h3 className="font-bold text-slate-900 text-sm sm:text-base">{t('courseInfoTitle')}</h3>
               <button
                 onClick={() => setShowLeaveForm(!showLeaveForm)}
                 className="inline-flex items-center space-x-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
-                <span>Request Leave</span>
+                <span>{t('requestLeaveBtn')}</span>
               </button>
             </div>
 
@@ -331,17 +333,17 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
             {leaveSuccess && (
               <div className="mt-3 p-3 rounded-xl bg-emerald-50 text-emerald-800 text-xs flex items-center space-x-2 border border-emerald-200">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Leave request submitted for academic approval!</span>
+                <span>Leave request submitted!</span>
               </div>
             )}
 
             {/* Inline Leave Request Form */}
             {showLeaveForm ? (
               <form onSubmit={handleLeaveSubmit} className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-                <h4 className="text-xs font-bold uppercase text-slate-700">Submit Excused Absence Request</h4>
+                <h4 className="text-xs font-bold uppercase text-slate-700">{t('submitLeaveTitle')}</h4>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">Start Date</label>
+                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">{t('startDateLabel')}</label>
                     <input
                       type="date"
                       value={leaveStart}
@@ -351,7 +353,7 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">End Date</label>
+                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">{t('endDateLabel')}</label>
                     <input
                       type="date"
                       value={leaveEnd}
@@ -363,13 +365,13 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-500 block mb-1">Reason (Medical / Official)</label>
+                  <label className="text-[11px] font-semibold text-slate-500 block mb-1">{t('reasonLabel')}</label>
                   <textarea
                     rows="2"
                     value={leaveReason}
                     onChange={(e) => setLeaveReason(e.target.value)}
                     required
-                    placeholder="Describe reason for leave..."
+                    placeholder="..."
                     className="w-full text-xs p-2 bg-white border border-slate-200 rounded-lg"
                   />
                 </div>
@@ -380,14 +382,14 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
                     onClick={() => setShowLeaveForm(false)}
                     className="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-200 rounded-lg"
                   >
-                    Cancel
+                    {t('cancelBtn')}
                   </button>
                   <button
                     type="submit"
                     disabled={leaveSubmitting}
                     className="px-4 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition"
                   >
-                    {leaveSubmitting ? 'Sending...' : 'Submit Request'}
+                    {leaveSubmitting ? t('savingBtn') : t('submitRequestBtn')}
                   </button>
                 </div>
               </form>
@@ -395,19 +397,19 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
               <div className="mt-4 space-y-3 text-xs text-slate-600">
                 <div className="flex items-center space-x-2.5">
                   <User className="w-4 h-4 text-slate-400 shrink-0" />
-                  <span>Lead Instructor: <strong className="text-slate-800">{currentUser.teacher_name}</strong></span>
+                  <span>{t('leadInstructor')}: <strong className="text-slate-800">{currentUser.teacher_name}</strong></span>
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                  <span>Classroom / Lab: <strong className="text-slate-800">{currentUser.room}</strong></span>
+                  <span>{t('classroomLab')}: <strong className="text-slate-800">{currentUser.room}</strong></span>
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <Clock className="w-4 h-4 text-slate-400 shrink-0" />
-                  <span>Schedule: <strong className="text-slate-800">{currentUser.schedule_time}</strong></span>
+                  <span>{t('scheduleTimeLabel')}: <strong className="text-slate-800">{currentUser.schedule_time}</strong></span>
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <FileText className="w-4 h-4 text-slate-400 shrink-0" />
-                  <span>Academic Term: <strong className="text-slate-800">2024-2025 (Semester 1)</strong></span>
+                  <span>{t('academicYearLabel')}: <strong className="text-slate-800">2024-2025 (Semester 1)</strong></span>
                 </div>
               </div>
             )}
@@ -416,7 +418,7 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
           {/* Leave Requests Log */}
           {leave_requests && leave_requests.length > 0 && (
             <div className="mt-4 pt-4 border-t border-slate-100">
-              <span className="text-[11px] font-semibold text-slate-400 uppercase block mb-2">My Leave Requests:</span>
+              <span className="text-[11px] font-semibold text-slate-400 uppercase block mb-2">{t('myLeaveRequestsLabel')}</span>
               <div className="space-y-1.5">
                 {leave_requests.map((lr) => (
                   <div key={lr.id} className="flex items-center justify-between text-xs p-2 rounded-lg bg-slate-50 border border-slate-100">
@@ -429,7 +431,7 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
                       lr.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
                       'bg-rose-50 text-rose-700 border border-rose-200'
                     }`}>
-                      {lr.status}
+                      {lr.status === 'approved' ? t('approvedStatus') : lr.status === 'pending' ? t('pendingStatus') : t('rejectedStatus')}
                     </span>
                   </div>
                 ))}
@@ -443,11 +445,11 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
       <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
         <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h3 className="font-bold text-slate-900 text-sm sm:text-base">My Complete Attendance History</h3>
-            <p className="text-xs text-slate-500">Chronological audit log of all recorded lectures and lab sessions</p>
+            <h3 className="font-bold text-slate-900 text-sm sm:text-base">{t('myCompleteHistory')}</h3>
+            <p className="text-xs text-slate-500">{t('historyDesc')}</p>
           </div>
           <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-mono">
-            {records.length} Recorded Sessions
+            {records.length} {t('recordedSessionsCount')}
           </span>
         </div>
 
@@ -457,10 +459,10 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
               <tr>
                 <th className="py-3 px-4">Date</th>
                 <th className="py-3 px-4">Topic / Session</th>
-                <th className="py-3 px-4 text-center">Status</th>
+                <th className="py-3 px-4 text-center">{t('statusCol')}</th>
                 <th className="py-3 px-4">Check-in Time</th>
                 <th className="py-3 px-4">Method</th>
-                <th className="py-3 px-4">Teacher Remark</th>
+                <th className="py-3 px-4">{t('remarksCol')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -481,15 +483,15 @@ export default function StudentPortalView({ currentUser, onOpenCheckin }) {
                     </td>
                     <td className="py-3 px-4 text-center">
                       <span className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold capitalize border ${
-                        isP ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                        isL ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                        isA ? 'bg-rose-50 text-rose-700 border-rose-200' :
+                        isP ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                        isL ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+                        isA ? 'bg-rose-50 text-rose-700 border border-rose-200' :
                         'bg-blue-50 text-blue-700 border border-blue-200'
                       }`}>
                         {isP && <CheckCircle2 className="w-3 h-3 text-emerald-600" />}
                         {isL && <Clock className="w-3 h-3 text-amber-600" />}
                         {isA && <XCircle className="w-3 h-3 text-rose-600" />}
-                        <span>{r.status}</span>
+                        <span>{isP ? t('present') : isL ? t('late') : isA ? t('absent') : t('excused')}</span>
                       </span>
                     </td>
                     <td className="py-3 px-4 font-mono text-xs text-slate-600">

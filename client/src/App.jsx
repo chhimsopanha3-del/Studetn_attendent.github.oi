@@ -11,15 +11,17 @@ import StudentPortalView from './components/StudentPortalView';
 import LoginModal from './components/LoginModal';
 import { StudentDetailModal, AddStudentModal, AddClassModal } from './components/Modals';
 import { api } from './api';
+import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 
-export default function App() {
+function AppContent() {
+  const { t } = useLanguage();
+
   // Current user state (persisted in localStorage or default to student)
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const saved = localStorage.getItem('edutrack_user');
       if (saved) return JSON.parse(saved);
     } catch (e) {}
-    // Default initial user is Student Sopanha Chhem (USEA-2024-001)
     return {
       id: 1,
       student_id: 'USEA-2024-001',
@@ -54,7 +56,9 @@ export default function App() {
   // Persist user in localStorage
   useEffect(() => {
     if (currentUser) {
-      localStorage.setItem('edutrack_user', JSON.stringify(currentUser));
+      try {
+        localStorage.setItem('edutrack_user', JSON.stringify(currentUser));
+      } catch (e) {}
     }
   }, [currentUser]);
 
@@ -82,10 +86,10 @@ export default function App() {
     setCurrentUser(user);
     if (user.role === 'student') {
       setActiveTab('my-portal');
-      showToast(`Welcome to your Student Portal, ${user.first_name}!`);
+      showToast(`${t('welcomeBack')}, ${user.first_name}!`);
     } else {
       setActiveTab('dashboard');
-      showToast(`Signed in as Faculty Administrator: ${user.name}`);
+      showToast(`Signed in: ${user.name}`);
     }
   }
 
@@ -203,7 +207,7 @@ export default function App() {
               onClick={() => setIsLoginModalOpen(true)}
               className="font-medium text-indigo-600 hover:text-indigo-800 transition cursor-pointer"
             >
-              Switch Account (Student / Faculty)
+              {t('switchAccount')}
             </button>
             <span>•</span>
             <span>Node.js 24 + Express 5 + SQLite + React 19</span>
@@ -242,5 +246,13 @@ export default function App() {
         }}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }

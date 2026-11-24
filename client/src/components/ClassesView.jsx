@@ -13,8 +13,10 @@ import {
   BookOpen
 } from 'lucide-react';
 import { api } from '../api';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function ClassesView({ onSelectClassForAttendance, onOpenAddClass }) {
+  const { t } = useLanguage();
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,10 +47,10 @@ export default function ClassesView({ onSelectClassForAttendance, onOpenAddClass
             <span className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
               <GraduationCap className="w-5 h-5" />
             </span>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Academic Classes & Courses</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">{t('classesTitle')}</h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Manage course schedules, class rooms, instructor assignments, and cohort attendance rates.
+            {t('classesDesc')}
           </p>
         </div>
 
@@ -57,7 +59,7 @@ export default function ClassesView({ onSelectClassForAttendance, onOpenAddClass
           className="inline-flex items-center space-x-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-md shadow-indigo-100 transition cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
-          <span>Add New Class</span>
+          <span>{t('addNewClassBtn')}</span>
         </button>
       </div>
 
@@ -77,7 +79,7 @@ export default function ClassesView({ onSelectClassForAttendance, onOpenAddClass
                     {cls.code}
                   </span>
                   <div className="flex items-center space-x-1.5 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200">
-                    <span className="text-[11px] font-semibold text-slate-500">Term:</span>
+                    <span className="text-[11px] font-semibold text-slate-500">{t('termLabel')}:</span>
                     <span className="text-[11px] font-bold text-slate-800">{cls.semester}</span>
                   </div>
                 </div>
@@ -90,19 +92,19 @@ export default function ClassesView({ onSelectClassForAttendance, onOpenAddClass
                 <div className="mt-4 pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600">
                   <div className="flex items-center space-x-2">
                     <User className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>Instructor: <strong className="text-slate-800">{cls.teacher_name}</strong></span>
+                    <span>{t('instructorLabel')}: <strong className="text-slate-800">{cls.teacher_name}</strong></span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>Location: <strong className="text-slate-800">{cls.room}</strong></span>
+                    <span>{t('locationLabel')}: <strong className="text-slate-800">{cls.room}</strong></span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Clock className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>Schedule: <strong className="text-slate-800">{cls.schedule_time}</strong></span>
+                    <span>{t('scheduleLabel')}: <strong className="text-slate-800">{cls.schedule_time}</strong></span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Users className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>Enrolled: <strong className="text-slate-800">{cls.student_count || 0} Students</strong></span>
+                    <span>{t('enrolledLabel')}: <strong className="text-slate-800">{cls.student_count || 0}</strong></span>
                   </div>
                 </div>
               </div>
@@ -110,7 +112,7 @@ export default function ClassesView({ onSelectClassForAttendance, onOpenAddClass
               {/* Attendance Progress & CTA */}
               <div className="mt-6 pt-4 border-t border-slate-100">
                 <div className="flex items-center justify-between text-xs mb-1.5">
-                  <span className="font-medium text-slate-500">Average Attendance Rate</span>
+                  <span className="font-medium text-slate-500">{t('averageAttendance')}</span>
                   <span className={`font-bold ${rate >= 80 ? 'text-emerald-600' : 'text-amber-600'}`}>{rate}%</span>
                 </div>
                 <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
@@ -126,7 +128,7 @@ export default function ClassesView({ onSelectClassForAttendance, onOpenAddClass
                     className="inline-flex items-center space-x-1.5 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-lg transition cursor-pointer"
                   >
                     <ClipboardCheck className="w-4 h-4" />
-                    <span>Take Attendance</span>
+                    <span>{t('takeAttendanceBtn')}</span>
                   </button>
                 </div>
               </div>
