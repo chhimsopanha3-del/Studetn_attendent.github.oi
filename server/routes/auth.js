@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { queryAll, queryOne } = require('../db');
+const crypto = require('crypto');
+const { queryAll, queryOne, run } = require('../db');
+
+function hashPassword(password) {
+  return crypto.createHash('sha256').update(password).digest('hex');
+}
 
 // POST /api/auth/student-login
 router.post('/student-login', (req, res) => {
@@ -35,8 +40,6 @@ router.post('/student-login', (req, res) => {
       });
     }
 
-    // In educational demo, default password is 'password123' or student's own ID
-    // If a password was supplied, we accept standard password or allow direct login
     const userPayload = {
       id: student.id,
       student_id: student.student_id,
@@ -68,24 +71,139 @@ router.post('/student-login', (req, res) => {
   }
 });
 
-// POST /api/auth/faculty-login
-router.post('/faculty-login', (req, res) => {
+// POST /api/auth/faculty-login (and /api/auth/staff-login)
+// Enforces strict ID + Password authentication. If password is missing or wrong, CANNOT login!
+router.post('/faculty-login', handleStaffLogin);
+router.post('/staff-login', handleStaffLogin);
+
+function handleStaffLogin(req, res) {
   try {
-    const { email } = req.body;
+    const { staff_id, email, password } = req.body;
+    const identifier = (staff_id || email || '').trim();
+
+    // 1. If staff does not have password or ID, cannot login!
+    if (!identifier) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Staff ID is required to log in.' 
+      });
+    }
+
+    if (!password || !password.trim()) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Password is required. Staff cannot log in without a password.' 
+      });
+    }
+
+    // 2. Query staff table by staff_id or email
+    const staff = queryOne(`
+      SELECT * FROM staff 
+      WHERE (LOWER(staff_id) = LOWER(?) OR LOWER(email) = LOWER(?))
+    `, [identifier, identifier]);
+
+    if (!staff) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Invalid Staff ID. Account does not exist.' 
+      });
+    }
+
+    // 3. Verify password hash
+    const inputHash = hashPassword(password.trim());
+    if (staff.password_hash !== inputHash) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Incorrect password. Staff cannot log in with invalid credentials.' 
+      });
+    }
+
+    // 4. Return staff payload
     const userPayload = {
-      id: 999,
-      name: 'Dr. Robert Vance',
-      email: email || 'r.vance@usea.edu.kh',
-      role: 'faculty',
-      title: 'Senior Academic Faculty & Dean'
+      id: staff.id,
+      staff_id: staff.staff_id,
+      name: staff.full_name,
+      full_name: staff.full_name,
+      email: staff.email,
+      role: staff.role || 'faculty',
+      department: staff.department,
+      phone: staff.phone,
+      avatar: staff.avatar,
+      title: staff.role === 'admin' ? 'Senior Faculty Dean & Admin' : 'Course Instructor'
     };
 
     res.json({
       success: true,
-      message: 'Logged in as Faculty Administrator',
+      message: `Welcome back, ${staff.full_name}!`,
       user: userPayload,
-      token: `faculty-token-${Date.now()}`
+      token: `staff-token-${staff.id}-${Date.now()}`
     });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+// POST /api/auth/change-password
+// Allows staff to change their password securely
+router.post('/change-password', (req, res) => {
+  try {
+    const { staff_id, current_password, new_password } = req.body;
+
+    if (!staff_id || !current_password || !new_password) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Staff ID, current password, and new password are all required.' 
+      });
+    }
+
+    if (new_password.trim().length < 6) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'New password must be at least 6 characters long.' 
+      });
+    }
+
+    // Find staff
+    const staff = queryOne(`
+      SELECT * FROM staff WHERE (LOWER(staff_id) = LOWER(?) OR id = ?)
+    `, [staff_id.trim(), staff_id]);
+
+    if (!staff) {
+      return res.status(404).json({ success: false, error: 'Staff account not found.' });
+    }
+
+    // Verify current password
+    const currentHash = hashPassword(current_password.trim());
+    if (staff.password_hash !== currentHash) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Current password is incorrect. Verification failed.' 
+      });
+    }
+
+    // Update with new password hash
+    const newHash = hashPassword(new_password.trim());
+    run('UPDATE staff SET password_hash = ? WHERE id = ?', [newHash, staff.id]);
+
+    res.json({
+      success: true,
+      message: 'Password changed successfully! You can now log in with your new password.'
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/auth/demo-staff - list staff accounts for quick testing
+router.get('/demo-staff', (req, res) => {
+  try {
+    const staffList = queryAll(`
+      SELECT id, staff_id, full_name, email, role, department, avatar 
+      FROM staff 
+      ORDER BY id ASC
+    `);
+
+    res.json({ success: true, data: staffList });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

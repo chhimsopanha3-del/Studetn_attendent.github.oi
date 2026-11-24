@@ -1,4 +1,9 @@
 const { db, queryAll, run, transaction } = require('./index');
+const crypto = require('crypto');
+
+function hashPassword(password) {
+  return crypto.createHash('sha256').update(password).digest('hex');
+}
 
 function seedDatabase() {
   console.log('🌱 Starting database seeding...');
@@ -11,6 +16,7 @@ function seedDatabase() {
     db.exec('DELETE FROM students;');
     db.exec('DELETE FROM classes;');
     db.exec('DELETE FROM departments;');
+    db.exec('DELETE FROM staff;');
 
     // 1. Departments
     const insertDept = db.prepare('INSERT INTO departments (name, code) VALUES (?, ?)');
@@ -232,6 +238,55 @@ function seedDatabase() {
     insertLeave.run(students[15].id, dates[dates.length - 1], dates[dates.length - 1], 'Attending sibling graduation ceremony', 'pending', null);
 
     console.log(' Generated sample leave requests');
+
+    // 6. Staff / Faculty Accounts with secure credentials
+    const insertStaff = db.prepare(`
+      INSERT INTO staff (staff_id, full_name, email, password_hash, role, department, phone, avatar)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    insertStaff.run(
+      'STAFF-001',
+      'Dr. Robert Vance',
+      'r.vance@usea.edu.kh',
+      hashPassword('admin123'),
+      'admin',
+      'Software Engineering',
+      '012-888-001',
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=RobertVance&backgroundColor=b6e3f4'
+    );
+    insertStaff.run(
+      'STAFF-002',
+      'Prof. Sophea Chan',
+      's.chan@usea.edu.kh',
+      hashPassword('teacher123'),
+      'teacher',
+      'Computer Science',
+      '012-888-002',
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=SopheaChan&backgroundColor=c0aede'
+    );
+    insertStaff.run(
+      'STAFF-003',
+      'Eng. Alex Seng',
+      'a.seng@usea.edu.kh',
+      hashPassword('teacher123'),
+      'teacher',
+      'Information Technology',
+      '012-888-003',
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=AlexSeng&backgroundColor=d1d4f9'
+    );
+    insertStaff.run(
+      'STAFF-004',
+      'Dr. Emily Zhao',
+      'e.zhao@usea.edu.kh',
+      hashPassword('teacher123'),
+      'teacher',
+      'Artificial Intelligence',
+      '012-888-004',
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=EmilyZhao&backgroundColor=ffd5dc'
+    );
+
+    console.log(' Created 4 faculty staff accounts');
   });
 
   console.log('✅ Database successfully seeded and ready!');

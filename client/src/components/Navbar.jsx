@@ -16,7 +16,8 @@ import {
   UserCheck,
   ShieldCheck,
   User,
-  Languages
+  Languages,
+  KeyRound
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
@@ -27,7 +28,8 @@ export default function Navbar({
   isReseeding, 
   currentUser, 
   onOpenLogin,
-  onLogout 
+  onLogout,
+  onOpenChangePassword
 }) {
   const { lang, toggleLanguage, t } = useLanguage();
   const [time, setTime] = useState(new Date());
@@ -120,9 +122,20 @@ export default function Navbar({
                     {currentUser.full_name || currentUser.name}
                   </span>
                   <span className="text-[10px] text-slate-500 font-mono block">
-                    {currentUser.student_id ? `${currentUser.student_id}` : 'Faculty Dean'}
+                    {currentUser.student_id ? `${currentUser.student_id}` : (currentUser.staff_id || 'Staff Account')}
                   </span>
                 </div>
+
+                {!isStudent && onOpenChangePassword && (
+                  <button
+                    onClick={onOpenChangePassword}
+                    title={t('changePassword')}
+                    className="px-2 py-1 bg-white hover:bg-indigo-50 text-indigo-700 hover:text-indigo-900 text-xs font-semibold rounded-lg border border-indigo-200 transition cursor-pointer flex items-center space-x-1"
+                  >
+                    <KeyRound className="w-3 h-3 text-indigo-600" />
+                    <span className="hidden md:inline">{t('changePassword')}</span>
+                  </button>
+                )}
 
                 <button
                   onClick={onOpenLogin}

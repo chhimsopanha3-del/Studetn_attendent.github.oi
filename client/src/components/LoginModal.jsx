@@ -9,24 +9,39 @@ import {
   X,
   AlertCircle,
   School,
-  CheckCircle2
+  CheckCircle2,
+  KeyRound,
+  ShieldAlert
 } from 'lucide-react';
 import { api } from '../api';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
+  const { t } = useLanguage();
   const [role, setRole] = useState('student'); // 'student' | 'faculty'
+  
+  // Student form state
   const [studentId, setStudentId] = useState('USEA-2024-001');
-  const [password, setPassword] = useState('password123');
-  const [facultyEmail, setFacultyEmail] = useState('r.vance@usea.edu.kh');
+  const [studentPassword, setStudentPassword] = useState('password123');
+  
+  // Staff form state
+  const [staffId, setStaffId] = useState('STAFF-001');
+  const [staffPassword, setStaffPassword] = useState('admin123');
+
   const [demoStudents, setDemoStudents] = useState([]);
+  const [demoStaff, setDemoStaff] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     async function loadDemos() {
       try {
-        const res = await api.getDemoStudents();
-        if (res.success) setDemoStudents(res.data);
+        const [resStudents, resStaff] = await Promise.all([
+          api.getDemoStudents(),
+          api.getDemoStaff().catch(() => ({ success: false }))
+        ]);
+        if (resStudents?.success) setDemoStudents(resStudents.data);
+        if (resStaff?.success) setDemoStaff(resStaff.data);
       } catch (err) {
         console.error(err);
       }
@@ -44,7 +59,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
     try {
       setLoading(true);
       setErrorMsg('');
-      const res = await api.studentLogin(idToUse, password);
+      const res = await api.studentLogin(idToUse, studentPassword);
       if (res.success) {
         onLoginSuccess(res.user);
         onClose();
@@ -58,17 +73,32 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
     }
   }
 
-  async function handleFacultyLogin(e) {
+  async function handleStaffLogin(e, customId, customPassword) {
     if (e) e.preventDefault();
+    const idToUse = customId !== undefined ? customId : staffId.trim();
+    const pwToUse = customPassword !== undefined ? customPassword : staffPassword;
+
+    setErrorMsg('');
+
+    // Strict validation: Staff CANNOT login without a password
+    if (!pwToUse || !pwToUse.trim()) {
+      setErrorMsg(t('staffPasswordRequired'));
+      return;
+    }
+
+    if (!idToUse) {
+      setErrorMsg('Staff ID or Email is required');
+      return;
+    }
+
     try {
       setLoading(true);
-      setErrorMsg('');
-      const res = await api.facultyLogin(facultyEmail, password);
+      const res = await api.staffLogin(idToUse, pwToUse);
       if (res.success) {
         onLoginSuccess(res.user);
         onClose();
       } else {
-        setErrorMsg(res.error || 'Failed to login');
+        setErrorMsg(res.error || 'Invalid credentials or staff password');
       }
     } catch (err) {
       setErrorMsg('Network error connecting to login server');
@@ -120,16 +150,16 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
-            <span>Faculty / Staff</span>
+            <span>{t('staffAccount')}</span>
           </button>
         </div>
 
         {/* Login Body */}
         <div className="p-6">
           {errorMsg && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-50 text-rose-700 text-xs flex items-center space-x-2 border border-rose-200">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>{errorMsg}</span>
+            <div className="mb-4 p-3 rounded-xl bg-rose-50 text-rose-700 text-xs flex items-start space-x-2 border border-rose-200">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <div className="flex-1 font-medium">{errorMsg}</div>
             </div>
           )}
 
@@ -160,8 +190,8 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
                   <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                   <input
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={studentPassword}
+                    onChange={(e) => setStudentPassword(e.target.value)}
                     placeholder="••••••••"
                     className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   />
@@ -204,38 +234,46 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
               </div>
             </form>
           ) : (
-            <form onSubmit={handleFacultyLogin} className="space-y-4">
+            <form onSubmit={(e) => handleStaffLogin(e)} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">
-                  Faculty Email Address
+                  {t('staffIdOrEmail')} <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
                   <User className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                   <input
-                    type="email"
+                    type="text"
                     required
-                    value={facultyEmail}
-                    onChange={(e) => setFacultyEmail(e.target.value)}
-                    placeholder="faculty@usea.edu.kh"
-                    className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    value={staffId}
+                    onChange={(e) => setStaffId(e.target.value)}
+                    placeholder={t('staffIdPlaceholder')}
+                    className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">
-                  Password
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-semibold uppercase text-slate-500">
+                    {t('staffPassword')} <span className="text-rose-500">*</span>
+                  </label>
+                  <span className="text-[10px] text-rose-600 font-semibold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">
+                    Required to sign in
+                  </span>
+                </div>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                   <input
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
+                    value={staffPassword}
+                    onChange={(e) => setStaffPassword(e.target.value)}
+                    placeholder="Enter staff password..."
                     className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   />
                 </div>
+                <p className="text-[11px] text-slate-400 mt-1">
+                  If staff do not enter a password, login is strictly denied.
+                </p>
               </div>
 
               <button
@@ -243,9 +281,58 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
                 disabled={loading}
                 className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold rounded-xl transition shadow-md flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
               >
-                <span>{loading ? 'Signing in...' : 'Sign In as Faculty'}</span>
+                <span>{loading ? 'Authenticating...' : t('signInAsStaff')}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
+
+              {/* 1-Click Quick Demo Staff Switchers */}
+              <div className="pt-3 border-t border-slate-100">
+                <span className="text-[11px] font-semibold text-slate-400 block mb-2 uppercase">
+                  Staff Accounts & Test Credentials:
+                </span>
+                <div className="grid grid-cols-2 gap-2 mb-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStaffId('STAFF-001');
+                      setStaffPassword('admin123');
+                      handleStaffLogin(null, 'STAFF-001', 'admin123');
+                    }}
+                    className="p-2 text-left bg-indigo-50/50 hover:bg-indigo-100/50 rounded-xl border border-indigo-200/60 transition cursor-pointer"
+                  >
+                    <span className="text-xs font-bold text-indigo-900 block">STAFF-001 (Admin)</span>
+                    <span className="text-[10px] text-indigo-700 font-mono block">Dr. Robert Vance</span>
+                    <span className="text-[9px] text-slate-500">pw: admin123</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStaffId('STAFF-002');
+                      setStaffPassword('teacher123');
+                      handleStaffLogin(null, 'STAFF-002', 'teacher123');
+                    }}
+                    className="p-2 text-left bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer"
+                  >
+                    <span className="text-xs font-bold text-slate-800 block">STAFF-002 (Teacher)</span>
+                    <span className="text-[10px] text-slate-600 font-mono block">Prof. Sophea Chan</span>
+                    <span className="text-[9px] text-slate-500">pw: teacher123</span>
+                  </button>
+                </div>
+
+                {/* Empty Password Rejection Test Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStaffPassword('');
+                    handleStaffLogin(null, staffId, '');
+                  }}
+                  className="w-full py-1.5 px-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-semibold rounded-lg border border-rose-200 flex items-center justify-center space-x-1.5 transition cursor-pointer"
+                >
+                  <ShieldAlert className="w-3.5 h-3.5" />
+                  <span>Test Login Without Password (Verify Block)</span>
+                </button>
+              </div>
             </form>
           )}
         </div>

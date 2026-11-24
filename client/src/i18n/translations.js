@@ -42,6 +42,26 @@ export const translations = {
     leaveRequests: 'Leave Requests',
     myPortal: 'My Student Portal',
 
+    // Staff Auth & Password Change
+    staffAccount: 'Faculty / Staff Account',
+    staffIdOrEmail: 'Staff ID or Email',
+    staffPassword: 'Staff Password',
+    staffPasswordRequired: 'Staff password is required. Staff without a password cannot log in.',
+    staffIdPlaceholder: 'e.g. STAFF-001 or r.vance@usea.edu.kh',
+    signInAsStaff: 'Sign In as Staff / Faculty',
+    changePassword: 'Change Password',
+    changePasswordTitle: 'Change Staff Password',
+    changePasswordDesc: 'Update your staff portal security password',
+    currentPassword: 'Current Password',
+    newPassword: 'New Password',
+    confirmNewPassword: 'Confirm New Password',
+    passwordMismatch: 'New password and confirmation do not match',
+    passwordChangedSuccess: 'Password changed successfully! You can now use your new password.',
+    passwordLengthError: 'New password must be at least 6 characters',
+    updatingPassword: 'Updating Password...',
+    saveNewPassword: 'Save New Password',
+    close: 'Close',
+
     // Statuses
     present: 'Present',
     late: 'Late',
@@ -241,6 +261,26 @@ export const translations = {
     leaveRequests: 'ពាក្យស្នើសុំច្បាប់',
     myPortal: 'គណនីនិស្សិតរបស់ខ្ញុំ',
 
+    // Staff Auth & Password Change
+    staffAccount: 'Faculty / Staff Account',
+    staffIdOrEmail: 'Staff ID or Email',
+    staffPassword: 'Staff Password',
+    staffPasswordRequired: 'Staff password is required. Staff without a password cannot log in.',
+    staffIdPlaceholder: 'e.g. STAFF-001 or r.vance@usea.edu.kh',
+    signInAsStaff: 'Sign In as Staff / Faculty',
+    changePassword: 'Change Password',
+    changePasswordTitle: 'Change Staff Password',
+    changePasswordDesc: 'Update your staff portal security password',
+    currentPassword: 'Current Password',
+    newPassword: 'New Password',
+    confirmNewPassword: 'Confirm New Password',
+    passwordMismatch: 'New password and confirmation do not match',
+    passwordChangedSuccess: 'Password changed successfully! You can now use your new password.',
+    passwordLengthError: 'New password must be at least 6 characters',
+    updatingPassword: 'Updating Password...',
+    saveNewPassword: 'Save New Password',
+    close: 'Close',
+
     // Statuses
     present: 'មានវត្តមាន',
     late: 'មកយឺត',
@@ -394,6 +434,26 @@ export const translations = {
     rejectBtn: 'បដិសេធ',
     pendingStatus: 'រង់ចាំពិនិត្យ',
     approvedStatus: 'បានអនុម័ត',
-    rejectedStatus: 'បានបដិសេធ'
+    rejectedStatus: 'បានបដិសេធ',
+
+    // Staff Auth & Password Change (Khmer)
+    staffAccount: 'គណនីបុគ្គលិក / សាស្ត្រាចារ្យ',
+    staffIdOrEmail: 'អត្តលេខបុគ្គលិក ឬអ៊ីមែល',
+    staffPassword: 'ពាក្យសម្ងាត់បុគ្គលិក',
+    staffPasswordRequired: 'តម្រូវឱ្យមានពាក្យសម្ងាត់។ បុគ្គលិកដែលគ្មានពាក្យសម្ងាត់មិនអាចចូលប្រើប្រព័ន្ធបានទេ!',
+    staffIdPlaceholder: 'ឧ. STAFF-001 ឬ r.vance@usea.edu.kh',
+    signInAsStaff: 'ចូលប្រើប្រាស់ជាបុគ្គលិក / សាស្ត្រាចារ្យ',
+    changePassword: 'ប្តូរពាក្យសម្ងាត់',
+    changePasswordTitle: 'ផ្លាស់ប្តូរពាក្យសម្ងាត់បុគ្គលិក',
+    changePasswordDesc: 'កំណត់ពាក្យសម្ងាត់សុវត្ថិភាពថ្មីសម្រាប់គណនីបុគ្គលិករបស់អ្នក',
+    currentPassword: 'ពាក្យសម្ងាត់បច្ចុប្បន្ន',
+    newPassword: 'ពាក្យសម្ងាត់ថ្មី',
+    confirmNewPassword: 'ផ្ទៀងផ្ទាត់ពាក្យសម្ងាត់ថ្មី',
+    passwordMismatch: 'ពាក្យសម្ងាត់ថ្មី និងការផ្ទៀងផ្ទាត់មិនត្រូវគ្នាទេ',
+    passwordChangedSuccess: 'ពាក្យសម្ងាត់ត្រូវបានផ្លាស់ប្តូរដោយជោគជ័យ! លោកអ្នកអាចប្រើពាក្យសម្ងាត់ថ្មីនេះបាន។',
+    passwordLengthError: 'ពាក្យសម្ងាត់ថ្មីត្រូវមានយ៉ាងតិច ៦ តួអក្សរ',
+    updatingPassword: 'កំពុងផ្លាស់ប្តូរ...',
+    saveNewPassword: 'រក្សាទុកពាក្យសម្ងាត់ថ្មី',
+    close: 'បិទ'
   }
 };

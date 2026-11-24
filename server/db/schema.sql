@@ -68,6 +68,19 @@ CREATE TABLE IF NOT EXISTS leave_requests (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS staff (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  staff_id TEXT NOT NULL UNIQUE,
+  full_name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'teacher' CHECK(role IN ('admin', 'teacher', 'officer')),
+  department TEXT NOT NULL DEFAULT 'Computer Science',
+  phone TEXT,
+  avatar TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Performance Indexes
 CREATE INDEX IF NOT EXISTS idx_students_class ON students(class_id);
 CREATE INDEX IF NOT EXISTS idx_students_status ON students(status);
@@ -76,3 +89,5 @@ CREATE INDEX IF NOT EXISTS idx_attendance_session ON attendance(session_id);
 CREATE INDEX IF NOT EXISTS idx_attendance_student ON attendance(student_id);
 CREATE INDEX IF NOT EXISTS idx_attendance_status ON attendance(status);
 CREATE INDEX IF NOT EXISTS idx_leave_student ON leave_requests(student_id);
+CREATE INDEX IF NOT EXISTS idx_staff_id ON staff(staff_id);
+CREATE INDEX IF NOT EXISTS idx_staff_email ON staff(email);

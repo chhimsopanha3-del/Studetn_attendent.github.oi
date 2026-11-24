@@ -8,12 +8,25 @@ export const api = {
     body: JSON.stringify({ student_id: studentId, password })
   }).then(r => r.json()),
 
-  facultyLogin: (email, password = '') => fetch(`${API_BASE}/auth/faculty-login`, {
+  facultyLogin: (staffIdOrEmail, password = '') => fetch(`${API_BASE}/auth/faculty-login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ staff_id: staffIdOrEmail, email: staffIdOrEmail, password })
   }).then(r => r.json()),
 
+  staffLogin: (staffId, password) => fetch(`${API_BASE}/auth/staff-login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ staff_id: staffId, password })
+  }).then(r => r.json()),
+
+  changePassword: (data) => fetch(`${API_BASE}/auth/change-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(r => r.json()),
+
+  getDemoStaff: () => fetch(`${API_BASE}/auth/demo-staff`).then(r => r.json()),
   getDemoStudents: () => fetch(`${API_BASE}/auth/demo-students`).then(r => r.json()),
 
   // Analytics
