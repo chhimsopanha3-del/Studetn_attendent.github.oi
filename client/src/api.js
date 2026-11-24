@@ -76,7 +76,8 @@ export const api = {
   }).then(r => r.json()),
 
   // Leave Requests
-  getLeaveRequests: () => fetch(`${API_BASE}/leave`).then(r => r.json()),
+  getLeaveRequests: (studentId = '') => fetch(`${API_BASE}/leave${studentId ? `?student_id=${studentId}` : ''}`).then(r => r.json()),
+  deleteLeaveRequest: (id) => fetch(`${API_BASE}/leave/${id}`, { method: 'DELETE' }).then(r => r.json()),
   submitLeaveRequest: (data) => fetch(`${API_BASE}/leave`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

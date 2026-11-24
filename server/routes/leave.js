@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { queryAll, queryOne, run } = require('../db');
 
-// GET /api/leave - list all leave requests
+// GET /api/leave - list all leave requests (supports ?student_id=...)
 router.get('/', (req, res) => {
   try {
-    const requests = queryAll(`
+    const { student_id } = req.query;
+    let sql = `
       SELECT 
         l.*,
         s.student_id AS student_code,
@@ -17,10 +18,30 @@ router.get('/', (req, res) => {
       FROM leave_requests l
       JOIN students s ON s.id = l.student_id
       JOIN classes c ON c.id = s.class_id
-      ORDER BY l.created_at DESC
-    `);
+      WHERE 1=1
+    `;
+    const params = [];
 
+    if (student_id) {
+      sql += ' AND l.student_id = ?';
+      params.push(student_id);
+    }
+
+    sql += ' ORDER BY l.created_at DESC';
+
+    const requests = queryAll(sql, params);
     res.json({ success: true, data: requests });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// DELETE /api/leave/:id - cancel a leave request
+router.delete('/:id', (req, res) => {
+  try {
+    const leaveId = req.params.id;
+    run('DELETE FROM leave_requests WHERE id = ?', [leaveId]);
+    res.json({ success: true, message: 'Leave request cancelled successfully' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

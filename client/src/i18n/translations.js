@@ -10,7 +10,28 @@ export const translations = {
     resetDemo: 'Reset Demo Data',
     academicTerm: 'Academic Term 2024-2025',
 
-    // Navigation Tabs
+    // Personal Attendance & Permissions
+    personalAttendanceHub: 'Personal Attendance & Permissions',
+    myPermissions: 'My Leave Permissions',
+    checkPersonalAttendance: 'Check Personal Attendance',
+    permissionStatusHub: 'Self-Service Permission Tracking',
+    permissionStatusDesc: 'Inspect your personal attendance record and check your approved, pending, or rejected permission requests by yourself.',
+    applyNewPermission: 'Apply for Leave Permission',
+    leaveCategory: 'Permission Category',
+    medicalLeave: 'Medical / Sick Leave',
+    familyUrgent: 'Family / Personal Emergency',
+    universityDuty: 'Academic Competition / University Representation',
+    officialMission: 'Official Mission / Exam',
+    reviewedBy: 'Reviewed by',
+    cancelPendingRequest: 'Cancel Request',
+    confirmedCancel: 'Are you sure you want to cancel this pending permission request?',
+    filterAll: 'All Sessions',
+    filterExcusedOnly: 'Excused (Permission) Only',
+    printStatement: 'Print Attendance Statement',
+    statementTitle: 'Official Student Attendance Statement',
+    statementDesc: 'Certified academic attendance record for University of South-East Asia (USEA)',
+
+    // Navigation Tabs:
     dashboard: 'Dashboard',
     markAttendance: 'Mark Attendance',
     qrStation: 'QR Station',
@@ -187,6 +208,27 @@ export const translations = {
     signIn: 'ចូលប្រព័ន្ធ',
     resetDemo: 'កំណត់ទិន្នន័យគំរូឡើងវិញ',
     academicTerm: 'ឆ្នាំសិក្សា ២០២៤-២០២៥',
+
+    // Personal Attendance & Permissions
+    personalAttendanceHub: 'វត្តមានផ្ទាល់ខ្លួន & ការសុំច្បាប់',
+    myPermissions: 'ច្បាប់អនុញ្ញាតរបស់ខ្ញុំ',
+    checkPersonalAttendance: 'ពិនិត្យវត្តមានផ្ទាល់ខ្លួន',
+    permissionStatusHub: 'ការតាមដានច្បាប់អនុញ្ញាតដោយខ្លួនឯង',
+    permissionStatusDesc: 'ពិនិត្យមើលវត្តមានផ្ទាល់ខ្លួន និងតាមដានស្ថានភាពពាក្យសុំច្បាប់ដែលបានអនុម័ត រង់ចាំពិនិត្យ ឬបដិសេធដោយខ្លួនឯង។',
+    applyNewPermission: 'ស្នើសុំច្បាប់ឈប់សម្រាកថ្មី',
+    leaveCategory: 'ប្រភេទនៃការសុំច្បាប់',
+    medicalLeave: 'ឈប់សម្រាកព្យាបាលជំងឺ (មានវេជ្ជបញ្ជា)',
+    familyUrgent: 'ធុរៈគ្រួសារចាំបាច់',
+    universityDuty: 'ការប្រកួតប្រជែង ឬតំណាងសាកលវិទ្យាល័យ',
+    officialMission: 'បេសកកម្មផ្លូវការ / ការប្រឡង',
+    reviewedBy: 'ពិនិត្យ & អនុម័តដោយ',
+    cancelPendingRequest: 'លុបចោលពាក្យសុំ',
+    confirmedCancel: 'តើអ្នកពិតជាចង់លុបចោលពាក្យសុំច្បាប់ដែលកំពុងរង់ចាំនេះមែនទេ?',
+    filterAll: 'គ្រប់វគ្គសិក្សាទាំងអស់',
+    filterExcusedOnly: 'តែម៉ោងមានច្បាប់អនុញ្ញាត (Excused)',
+    printStatement: 'បោះពុម្ពលិខិតបញ្ជាក់វត្តមាន',
+    statementTitle: 'លិខិតបញ្ជាក់វត្តមានផ្លូវការរបស់និស្សិត',
+    statementDesc: 'កំណត់ត្រាវត្តមានសិក្សាផ្លូវការនៃសាកលវិទ្យាល័យសៅស៍អ៊ីសថ៍អេសៀ (USEA)',
 
     // Navigation Tabs
     dashboard: 'ផ្ទាំងគ្រប់គ្រង',

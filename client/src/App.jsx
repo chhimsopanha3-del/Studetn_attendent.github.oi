@@ -8,6 +8,7 @@ import ClassesView from './components/ClassesView';
 import ReportsView from './components/ReportsView';
 import LeaveView from './components/LeaveView';
 import StudentPortalView from './components/StudentPortalView';
+import StudentPermissionsView from './components/StudentPermissionsView';
 import LoginModal from './components/LoginModal';
 import { StudentDetailModal, AddStudentModal, AddClassModal } from './components/Modals';
 import { api } from './api';
@@ -194,7 +195,11 @@ function AppContent() {
         )}
 
         {activeTab === 'leave' && (
-          <LeaveView />
+          currentUser?.role === 'student' ? (
+            <StudentPermissionsView currentUser={currentUser} />
+          ) : (
+            <LeaveView />
+          )
         )}
       </main>
 
