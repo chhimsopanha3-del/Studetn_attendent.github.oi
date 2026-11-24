@@ -1,0 +1,244 @@
+const { db, queryAll, run, transaction } = require('./index');
+
+function seedDatabase() {
+  console.log('🌱 Starting database seeding...');
+
+  transaction(() => {
+    // Clear existing data in correct FK order
+    db.exec('DELETE FROM attendance;');
+    db.exec('DELETE FROM leave_requests;');
+    db.exec('DELETE FROM sessions;');
+    db.exec('DELETE FROM students;');
+    db.exec('DELETE FROM classes;');
+    db.exec('DELETE FROM departments;');
+
+    // 1. Departments
+    const insertDept = db.prepare('INSERT INTO departments (name, code) VALUES (?, ?)');
+    insertDept.run('Faculty of Science and Information Technology', 'FSIT');
+    insertDept.run('Department of Software Engineering', 'DSE');
+    insertDept.run('Department of Artificial Intelligence', 'DAI');
+
+    // 2. Classes
+    const insertClass = db.prepare(`
+      INSERT INTO classes (name, code, department, room, teacher_name, schedule_time, academic_year, semester)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    insertClass.run(
+      'Full-Stack Web Engineering',
+      'SE-301',
+      'Software Engineering',
+      'Lab 302 (Building A)',
+      'Dr. Robert Vance',
+      '08:00 AM - 11:15 AM',
+      '2024-2025',
+      'Semester 1'
+    );
+    insertClass.run(
+      'Data Structures & Algorithms',
+      'CS-202',
+      'Computer Science',
+      'Room 205 (Building B)',
+      'Prof. Sophea Chan',
+      '01:00 PM - 04:15 PM',
+      '2024-2025',
+      'Semester 1'
+    );
+    insertClass.run(
+      'Cloud Architecture & DevOps',
+      'IT-401',
+      'Information Technology',
+      'Lab 401 (Innovation Hub)',
+      'Eng. Alex Seng',
+      '08:00 AM - 11:15 AM',
+      '2024-2025',
+      'Semester 1'
+    );
+    insertClass.run(
+      'Machine Learning & Data Mining',
+      'AI-405',
+      'Artificial Intelligence',
+      'Lab 105 (AI Research Center)',
+      'Dr. Emily Zhao',
+      '01:00 PM - 04:15 PM',
+      '2024-2025',
+      'Semester 1'
+    );
+
+    const classes = queryAll('SELECT id, name, code FROM classes');
+    console.log(` Created ${classes.length} classes`);
+
+    // 3. Students
+    const studentData = [
+      // Class 1 (SE-301)
+      { sid: 'USEA-2024-001', fn: 'Sopanha', ln: 'Chhem', g: 'Male', e: 'chhem.sopanha@usea.edu.kh', p: '012-345-678', c: classes[0].id },
+      { sid: 'USEA-2024-002', fn: 'Bopha', ln: 'Sok', g: 'Female', e: 'sok.bopha@usea.edu.kh', p: '098-765-432', c: classes[0].id },
+      { sid: 'USEA-2024-003', fn: 'Vireak', ln: 'Khem', g: 'Male', e: 'vireak.khem@usea.edu.kh', p: '077-112-233', c: classes[0].id },
+      { sid: 'USEA-2024-004', fn: 'Dany', ln: 'Meng', g: 'Female', e: 'dany.meng@usea.edu.kh', p: '085-445-566', c: classes[0].id },
+      { sid: 'USEA-2024-005', fn: 'Rithy', ln: 'Pich', g: 'Male', e: 'rithy.pich@usea.edu.kh', p: '011-998-877', c: classes[0].id },
+      { sid: 'USEA-2024-006', fn: 'Sreynich', ln: 'Chea', g: 'Female', e: 'sreynich.chea@usea.edu.kh', p: '069-332-211', c: classes[0].id },
+      { sid: 'USEA-2024-007', fn: 'Piseth', ln: 'Keo', g: 'Male', e: 'piseth.keo@usea.edu.kh', p: '015-667-788', c: classes[0].id },
+      { sid: 'USEA-2024-008', fn: 'Thida', ln: 'Ros', g: 'Female', e: 'thida.ros@usea.edu.kh', p: '089-223-344', c: classes[0].id },
+      { sid: 'USEA-2024-009', fn: 'Visal', ln: 'Heng', g: 'Male', e: 'visal.heng@usea.edu.kh', p: '093-556-677', c: classes[0].id },
+      { sid: 'USEA-2024-010', fn: 'Nary', ln: 'Chan', g: 'Female', e: 'nary.chan@usea.edu.kh', p: '012-778-899', c: classes[0].id },
+
+      // Class 2 (CS-202)
+      { sid: 'USEA-2024-011', fn: 'Panha', ln: 'Ouk', g: 'Male', e: 'panha.ouk@usea.edu.kh', p: '010-443-322', c: classes[1].id },
+      { sid: 'USEA-2024-012', fn: 'Kalyan', ln: 'Lim', g: 'Female', e: 'kalyan.lim@usea.edu.kh', p: '070-554-433', c: classes[1].id },
+      { sid: 'USEA-2024-013', fn: 'Sovann', ln: 'Yim', g: 'Male', e: 'sovann.yim@usea.edu.kh', p: '016-665-544', c: classes[1].id },
+      { sid: 'USEA-2024-014', fn: 'Socheata', ln: 'Kong', g: 'Female', e: 'socheata.kong@usea.edu.kh', p: '086-776-655', c: classes[1].id },
+      { sid: 'USEA-2024-015', fn: 'Vanna', ln: 'Ly', g: 'Male', e: 'vanna.ly@usea.edu.kh', p: '092-887-766', c: classes[1].id },
+      { sid: 'USEA-2024-016', fn: 'Kunthea', ln: 'Tep', g: 'Female', e: 'kunthea.tep@usea.edu.kh', p: '095-998-877', c: classes[1].id },
+      { sid: 'USEA-2024-017', fn: 'Dara', ln: 'Choun', g: 'Male', e: 'dara.choun@usea.edu.kh', p: '017-112-299', c: classes[1].id },
+      { sid: 'USEA-2024-018', fn: 'Channary', ln: 'Noun', g: 'Female', e: 'channary.noun@usea.edu.kh', p: '078-223-388', c: classes[1].id },
+
+      // Class 3 (IT-401)
+      { sid: 'USEA-2024-019', fn: 'Borey', ln: 'Sin', g: 'Male', e: 'borey.sin@usea.edu.kh', p: '088-334-477', c: classes[2].id },
+      { sid: 'USEA-2024-020', fn: 'Mony', ln: 'Chhit', g: 'Female', e: 'mony.chhit@usea.edu.kh', p: '097-445-566', c: classes[2].id },
+      { sid: 'USEA-2024-021', fn: 'Rothana', ln: 'Sar', g: 'Male', e: 'rothana.sar@usea.edu.kh', p: '012-556-655', c: classes[2].id },
+      { sid: 'USEA-2024-022', fn: 'Neary', ln: 'Pao', g: 'Female', e: 'neary.pao@usea.edu.kh', p: '071-667-744', c: classes[2].id },
+      { sid: 'USEA-2024-023', fn: 'Phanith', ln: 'San', g: 'Male', e: 'phanith.san@usea.edu.kh', p: '015-778-833', c: classes[2].id },
+      { sid: 'USEA-2024-024', fn: 'Leakhena', ln: 'Mam', g: 'Female', e: 'leakhena.mam@usea.edu.kh', p: '093-889-922', c: classes[2].id },
+      { sid: 'USEA-2024-025', fn: 'Ratanak', ln: 'Seng', g: 'Male', e: 'ratanak.seng@usea.edu.kh', p: '011-990-011', c: classes[2].id },
+
+      // Class 4 (AI-405)
+      { sid: 'USEA-2024-026', fn: 'Samnang', ln: 'Touch', g: 'Male', e: 'samnang.touch@usea.edu.kh', p: '068-123-456', c: classes[3].id },
+      { sid: 'USEA-2024-027', fn: 'Sreymao', ln: 'Chhin', g: 'Female', e: 'sreymao.chhin@usea.edu.kh', p: '085-234-567', c: classes[3].id },
+      { sid: 'USEA-2024-028', fn: 'Monineath', ln: 'Pen', g: 'Female', e: 'monineath.pen@usea.edu.kh', p: '016-345-678', c: classes[3].id },
+      { sid: 'USEA-2024-029', fn: 'Sovath', ln: 'Meas', g: 'Male', e: 'sovath.meas@usea.edu.kh', p: '077-456-789', c: classes[3].id },
+      { sid: 'USEA-2024-030', fn: 'Kosal', ln: 'Yun', g: 'Male', e: 'kosal.yun@usea.edu.kh', p: '092-567-890', c: classes[3].id },
+      { sid: 'USEA-2024-031', fn: 'Chantrea', ln: 'Prum', g: 'Female', e: 'chantrea.prum@usea.edu.kh', p: '098-678-901', c: classes[3].id },
+      { sid: 'USEA-2024-032', fn: 'Vutha', ln: 'Roeun', g: 'Male', e: 'vutha.roeun@usea.edu.kh', p: '070-789-012', c: classes[3].id }
+    ];
+
+    const insertStudent = db.prepare(`
+      INSERT INTO students (student_id, first_name, last_name, gender, email, phone, avatar, class_id, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active')
+    `);
+
+    for (const s of studentData) {
+      const avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${s.fn}${s.ln}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
+      insertStudent.run(s.sid, s.fn, s.ln, s.g, s.e, s.p, avatar, s.c);
+    }
+
+    const students = queryAll('SELECT id, student_id, first_name, last_name, class_id FROM students');
+    console.log(` Created ${students.length} students`);
+
+    // 4. Generate past 15 academic days (excluding weekends)
+    const today = new Date();
+    const dates = [];
+    let cur = new Date(today);
+    cur.setDate(cur.getDate() - 25);
+
+    while (dates.length < 15 && cur <= today) {
+      const day = cur.getDay();
+      if (day !== 0 && day !== 6) { // Mon - Fri
+        dates.push(cur.toISOString().split('T')[0]);
+      }
+      cur.setDate(cur.getDate() + 1);
+    }
+
+    const insertSession = db.prepare(`
+      INSERT INTO sessions (class_id, date, session_type, topic, qr_token)
+      VALUES (?, ?, ?, ?, ?)
+    `);
+
+    const insertAttendance = db.prepare(`
+      INSERT INTO attendance (session_id, student_id, status, remark, check_in_time, method)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+
+    let totalAttendanceCount = 0;
+
+    for (const cls of classes) {
+      const classStudents = students.filter(s => s.class_id === cls.id);
+
+      // Designate one student in each class to have poor attendance (< 75%) to demonstrate "At-Risk" alerts
+      const atRiskStudent = classStudents[1];
+
+      for (let i = 0; i < dates.length; i++) {
+        const dateStr = dates[i];
+        const topic = `Module ${Math.floor(i / 3) + 1}: Core Concepts & Lab Practical #${i + 1}`;
+        const qrToken = `QR-${cls.code}-${dateStr}-M`;
+
+        const sessionResult = insertSession.run(cls.id, dateStr, 'Morning', topic, qrToken);
+        const sessionId = sessionResult.lastInsertRowid;
+
+        for (const st of classStudents) {
+          let status = 'present';
+          let checkInTime = '07:55 AM';
+          let remark = '';
+          let method = 'manual';
+
+          // Simulate realistic attendance variance
+          const isAtRisk = atRiskStudent && st.id === atRiskStudent.id;
+          const rand = Math.random();
+
+          if (isAtRisk) {
+            if (rand < 0.45) {
+              status = 'absent';
+              checkInTime = null;
+              remark = 'Unexcused absence';
+            } else if (rand < 0.65) {
+              status = 'late';
+              checkInTime = '08:25 AM';
+              remark = 'Traffic congestion';
+            } else if (rand < 0.75) {
+              status = 'excused';
+              checkInTime = null;
+              remark = 'Family emergency';
+            } else {
+              status = 'present';
+              checkInTime = '07:58 AM';
+            }
+          } else {
+            if (rand < 0.85) {
+              status = 'present';
+              checkInTime = '07:' + String(45 + Math.floor(Math.random() * 14)).padStart(2, '0') + ' AM';
+              method = Math.random() > 0.4 ? 'qr_code' : 'manual';
+            } else if (rand < 0.92) {
+              status = 'late';
+              checkInTime = '08:' + String(5 + Math.floor(Math.random() * 20)).padStart(2, '0') + ' AM';
+              remark = 'Arrived late to class';
+            } else if (rand < 0.96) {
+              status = 'excused';
+              checkInTime = null;
+              remark = 'Medical note submitted';
+            } else {
+              status = 'absent';
+              checkInTime = null;
+              remark = 'Absent without prior notice';
+            }
+          }
+
+          insertAttendance.run(sessionId, st.id, status, remark, checkInTime, method);
+          totalAttendanceCount++;
+        }
+      }
+    }
+
+    console.log(` Created ${dates.length * classes.length} sessions`);
+    console.log(` Generated ${totalAttendanceCount} attendance records`);
+
+    // 5. Leave requests
+    const insertLeave = db.prepare(`
+      INSERT INTO leave_requests (student_id, start_date, end_date, reason, status, approved_by)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+
+    insertLeave.run(students[0].id, dates[2], dates[3], 'National Hackathon Competition representation', 'approved', 'Dr. Robert Vance');
+    insertLeave.run(students[3].id, dates[5], dates[5], 'Medical appointment with physician note', 'approved', 'Dean Office');
+    insertLeave.run(students[10].id, dates[8], dates[9], 'Severe fever and recovery', 'approved', 'Prof. Sophea Chan');
+    insertLeave.run(students[15].id, dates[dates.length - 1], dates[dates.length - 1], 'Attending sibling graduation ceremony', 'pending', null);
+
+    console.log(' Generated sample leave requests');
+  });
+
+  console.log('✅ Database successfully seeded and ready!');
+}
+
+if (require.main === module) {
+  seedDatabase();
+}
+
+module.exports = { seedDatabase };
