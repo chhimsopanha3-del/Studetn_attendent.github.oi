@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "Enterprise-grade Student Attendance Management System with Real-Time Analytics and QR Check-in",
   "main": "server/server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
     "dev": "concurrently -k -n \"API,WEB\" -c \"blue.bold,magenta.bold\" \"npm run server\" \"npm run client\"",
     "server": "node server/server.js",
     "client": "cd client && npm run dev",
-    "build": "cd client && npm run build",
+    "build": "cd client && npm install && npm run build",
     "seed": "node server/db/seed.js",
     "start": "node server/server.js"
   },

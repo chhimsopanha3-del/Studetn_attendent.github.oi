@@ -2,7 +2,16 @@ const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'attendance.db');
+// Support Vercel serverless environment (writable /tmp directory)
+let dbPath = process.env.DB_PATH;
+if (!dbPath) {
+  if (process.env.VERCEL) {
+    dbPath = path.join('/tmp', 'attendance.db');
+  } else {
+    dbPath = path.join(__dirname, 'attendance.db');
+  }
+}
+const DB_PATH = dbPath;
 
 // Ensure db directory exists
 const dbDir = path.dirname(DB_PATH);
@@ -65,3 +74,14 @@ module.exports = {
     }
   }
 };
+
+// Auto-seed if database is newly initialized or empty (e.g. on Vercel deployment)
+try {
+  const classCount = db.prepare("SELECT COUNT(*) AS count FROM classes").get();
+  if (!classCount || classCount.count === 0) {
+    const { seedDatabase } = require('./seed');
+    seedDatabase();
+  }
+} catch (e) {
+  // If table is still initializing, ignore silently
+}

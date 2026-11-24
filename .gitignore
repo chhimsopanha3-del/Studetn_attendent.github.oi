@@ -5,6 +5,9 @@ client/node_modules/
 # Production build
 client/dist/
 
+# Vercel deployment artifacts
+.vercel/
+
 # SQLite dynamic files
 server/db/*.db-shm
 server/db/*.db-wal

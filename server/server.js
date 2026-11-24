@@ -66,7 +66,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, error: 'Internal Server Error', message: err.message });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Student Attendance API Server running at http://localhost:${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/api/analytics/overview`);
-});
+// Export app for Vercel serverless handler
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Student Attendance API Server running at http://localhost:${PORT}`);
+    console.log(`📊 Health check: http://localhost:${PORT}/api/analytics/overview`);
+  });
+}
