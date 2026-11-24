@@ -235,6 +235,17 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
             </form>
           ) : (
             <form onSubmit={(e) => handleStaffLogin(e)} className="space-y-4">
+              {/* Pre-configured Authorization Notice */}
+              <div className="p-3 rounded-2xl bg-amber-50/90 text-amber-900 border border-amber-200/90 text-xs">
+                <div className="flex items-center space-x-1.5 font-bold mb-1">
+                  <ShieldCheck className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>{t('designatedAccounts')}</span>
+                </div>
+                <p className="text-[11px] text-amber-800 leading-relaxed">
+                  {t('staffAuthNotice')}
+                </p>
+              </div>
+
               <div>
                 <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">
                   {t('staffIdOrEmail')} <span className="text-rose-500">*</span>
@@ -267,7 +278,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
                     type="password"
                     value={staffPassword}
                     onChange={(e) => setStaffPassword(e.target.value)}
-                    placeholder="Enter staff password..."
+                    placeholder="Enter designated password..."
                     className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   />
                 </div>
@@ -288,50 +299,93 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
               {/* 1-Click Quick Demo Staff Switchers */}
               <div className="pt-3 border-t border-slate-100">
                 <span className="text-[11px] font-semibold text-slate-400 block mb-2 uppercase">
-                  Staff Accounts & Test Credentials:
+                  Designated Staff Accounts (ដែលបានកំណត់):
                 </span>
                 <div className="grid grid-cols-2 gap-2 mb-2">
                   <button
                     type="button"
                     onClick={() => {
-                      setStaffId('STAFF-001');
+                      setStaffId('c.sopanha@usea.edu.kh');
                       setStaffPassword('admin123');
-                      handleStaffLogin(null, 'STAFF-001', 'admin123');
+                      handleStaffLogin(null, 'c.sopanha@usea.edu.kh', 'admin123');
                     }}
                     className="p-2 text-left bg-indigo-50/50 hover:bg-indigo-100/50 rounded-xl border border-indigo-200/60 transition cursor-pointer"
                   >
                     <span className="text-xs font-bold text-indigo-900 block">STAFF-001 (Admin)</span>
                     <span className="text-[10px] text-indigo-700 font-mono block">Mr. Chhem Sopanha</span>
-                    <span className="text-[9px] text-slate-500">pw: admin123</span>
+                    <span className="text-[9px] text-slate-500">c.sopanha@usea.edu.kh</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => {
-                      setStaffId('STAFF-002');
+                      setStaffId('s.chan@usea.edu.kh');
                       setStaffPassword('teacher123');
-                      handleStaffLogin(null, 'STAFF-002', 'teacher123');
+                      handleStaffLogin(null, 's.chan@usea.edu.kh', 'teacher123');
                     }}
                     className="p-2 text-left bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer"
                   >
                     <span className="text-xs font-bold text-slate-800 block">STAFF-002 (Teacher)</span>
                     <span className="text-[10px] text-slate-600 font-mono block">Prof. Sophea Chan</span>
-                    <span className="text-[9px] text-slate-500">pw: teacher123</span>
+                    <span className="text-[9px] text-slate-500">s.chan@usea.edu.kh</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStaffId('a.seng@usea.edu.kh');
+                      setStaffPassword('teacher123');
+                      handleStaffLogin(null, 'a.seng@usea.edu.kh', 'teacher123');
+                    }}
+                    className="p-2 text-left bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer"
+                  >
+                    <span className="text-xs font-bold text-slate-800 block">STAFF-003 (Teacher)</span>
+                    <span className="text-[10px] text-slate-600 font-mono block">Eng. Alex Seng</span>
+                    <span className="text-[9px] text-slate-500">a.seng@usea.edu.kh</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStaffId('e.zhao@usea.edu.kh');
+                      setStaffPassword('teacher123');
+                      handleStaffLogin(null, 'e.zhao@usea.edu.kh', 'teacher123');
+                    }}
+                    className="p-2 text-left bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer"
+                  >
+                    <span className="text-xs font-bold text-slate-800 block">STAFF-004 (Teacher)</span>
+                    <span className="text-[10px] text-slate-600 font-mono block">Dr. Emily Zhao</span>
+                    <span className="text-[9px] text-slate-500">e.zhao@usea.edu.kh</span>
                   </button>
                 </div>
 
-                {/* Empty Password Rejection Test Button */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setStaffPassword('');
-                    handleStaffLogin(null, staffId, '');
-                  }}
-                  className="w-full py-1.5 px-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-semibold rounded-lg border border-rose-200 flex items-center justify-center space-x-1.5 transition cursor-pointer"
-                >
-                  <ShieldAlert className="w-3.5 h-3.5" />
-                  <span>Test Login Without Password (Verify Block)</span>
-                </button>
+                {/* Verification test buttons */}
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStaffId('unknown.teacher@usea.edu.kh');
+                      setStaffPassword('secret123');
+                      handleStaffLogin(null, 'unknown.teacher@usea.edu.kh', 'secret123');
+                    }}
+                    className="py-1.5 px-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-[10px] font-semibold rounded-lg border border-rose-200 flex items-center justify-center space-x-1 transition cursor-pointer"
+                  >
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                    <span>Test Unregistered Email (Blocked)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStaffPassword('');
+                      handleStaffLogin(null, staffId, '');
+                    }}
+                    className="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-semibold rounded-lg border border-slate-200 flex items-center justify-center space-x-1 transition cursor-pointer"
+                  >
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Test Empty Password (Blocked)</span>
+                  </button>
+                </div>
               </div>
             </form>
           )}

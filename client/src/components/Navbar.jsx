@@ -29,7 +29,8 @@ export default function Navbar({
   currentUser, 
   onOpenLogin,
   onLogout,
-  onOpenChangePassword
+  onOpenChangePassword,
+  onOpenStaffManagement
 }) {
   const { lang, toggleLanguage, t } = useLanguage();
   const [time, setTime] = useState(new Date());
@@ -125,6 +126,17 @@ export default function Navbar({
                     {currentUser.student_id ? `${currentUser.student_id}` : (currentUser.staff_id || 'Staff Account')}
                   </span>
                 </div>
+
+                {currentUser?.role === 'admin' && onOpenStaffManagement && (
+                  <button
+                    onClick={onOpenStaffManagement}
+                    title={t('staffManagement')}
+                    className="px-2 py-1 bg-white hover:bg-purple-50 text-purple-700 hover:text-purple-900 text-xs font-semibold rounded-lg border border-purple-200 transition cursor-pointer flex items-center space-x-1"
+                  >
+                    <Users className="w-3 h-3 text-purple-600" />
+                    <span className="hidden lg:inline">{t('staffManagement')}</span>
+                  </button>
+                )}
 
                 {!isStudent && onOpenChangePassword && (
                   <button

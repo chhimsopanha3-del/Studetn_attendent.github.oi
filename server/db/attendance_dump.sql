@@ -86,7 +86,6 @@ CREATE TABLE students (
 );
 
 INSERT INTO students (id, student_id, first_name, last_name, gender, email, phone, avatar, class_id, status, created_at) VALUES (1, 'USEA-2024-001', 'Sopanha', 'Chhem', 'Male', 'chhem.sopanha@usea.edu.kh', '012-345-678', 'https://api.dicebear.com/7.x/avataaars/svg?seed=SopanhaChhem&backgroundColor=b6e3f4,c0aede,d1d4f9', 1, 'active', '2026-11-24 08:59:10');
-INSERT INTO students (id, student_id, first_name, last_name, gender, email, phone, avatar, class_id, status, created_at) VALUES (2, 'USEA-2024-002', 'Bopha', 'Sok', 'Female', 'sok.bopha@usea.edu.kh', '098-765-432', 'https://api.dicebear.com/7.x/avataaars/svg?seed=BophaSok&backgroundColor=b6e3f4,c0aede,d1d4f9', 1, 'active', '2026-11-24 08:59:10');
 INSERT INTO students (id, student_id, first_name, last_name, gender, email, phone, avatar, class_id, status, created_at) VALUES (3, 'USEA-2024-003', 'Vireak', 'Khem', 'Male', 'vireak.khem@usea.edu.kh', '077-112-233', 'https://api.dicebear.com/7.x/avataaars/svg?seed=VireakKhem&backgroundColor=b6e3f4,c0aede,d1d4f9', 1, 'active', '2026-11-24 08:59:10');
 INSERT INTO students (id, student_id, first_name, last_name, gender, email, phone, avatar, class_id, status, created_at) VALUES (4, 'USEA-2024-004', 'Dany', 'Meng', 'Female', 'dany.meng@usea.edu.kh', '085-445-566', 'https://api.dicebear.com/7.x/avataaars/svg?seed=DanyMeng&backgroundColor=b6e3f4,c0aede,d1d4f9', 1, 'active', '2026-11-24 08:59:10');
 INSERT INTO students (id, student_id, first_name, last_name, gender, email, phone, avatar, class_id, status, created_at) VALUES (5, 'USEA-2024-005', 'Rithy', 'Pich', 'Male', 'rithy.pich@usea.edu.kh', '011-998-877', 'https://api.dicebear.com/7.x/avataaars/svg?seed=RithyPich&backgroundColor=b6e3f4,c0aede,d1d4f9', 1, 'active', '2026-11-24 08:59:10');
@@ -136,6 +135,7 @@ INSERT INTO staff (id, staff_id, full_name, email, password_hash, role, departme
 INSERT INTO staff (id, staff_id, full_name, email, password_hash, role, department, phone, avatar, created_at) VALUES (2, 'STAFF-002', 'Prof. Sophea Chan', 's.chan@usea.edu.kh', 'cde383eee8ee7a4400adf7a15f716f179a2eb97646b37e089eb8d6d04e663416', 'teacher', 'Computer Science', '012-888-002', 'https://api.dicebear.com/7.x/avataaars/svg?seed=SopheaChan&backgroundColor=c0aede', '2026-11-24 08:59:10');
 INSERT INTO staff (id, staff_id, full_name, email, password_hash, role, department, phone, avatar, created_at) VALUES (3, 'STAFF-003', 'Eng. Alex Seng', 'a.seng@usea.edu.kh', 'cde383eee8ee7a4400adf7a15f716f179a2eb97646b37e089eb8d6d04e663416', 'teacher', 'Information Technology', '012-888-003', 'https://api.dicebear.com/7.x/avataaars/svg?seed=AlexSeng&backgroundColor=d1d4f9', '2026-11-24 08:59:10');
 INSERT INTO staff (id, staff_id, full_name, email, password_hash, role, department, phone, avatar, created_at) VALUES (4, 'STAFF-004', 'Dr. Emily Zhao', 'e.zhao@usea.edu.kh', 'cde383eee8ee7a4400adf7a15f716f179a2eb97646b37e089eb8d6d04e663416', 'teacher', 'Artificial Intelligence', '012-888-004', 'https://api.dicebear.com/7.x/avataaars/svg?seed=EmilyZhao&backgroundColor=ffd5dc', '2026-11-24 08:59:10');
+INSERT INTO staff (id, staff_id, full_name, email, password_hash, role, department, phone, avatar, created_at) VALUES (5, 'STAFF-005', 'Prof. Sok Dara', 'd.sok@usea.edu.kh', '6f7b431de9b3e88a116d7c2e08cd34dce4169da7cfc0d18165ff216826b69fcf', 'teacher', 'Information Technology', '', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Prof.SokDara&backgroundColor=b6e3f4,c0aede,d1d4f9', '2026-11-24 09:04:23');
 
 DROP TABLE IF EXISTS sessions;
 CREATE TABLE sessions (
@@ -209,6 +209,7 @@ INSERT INTO sessions (id, class_id, date, session_type, topic, qr_token, created
 INSERT INTO sessions (id, class_id, date, session_type, topic, qr_token, created_at) VALUES (58, 4, '2026-11-17', 'Morning', 'Module 5: Core Concepts & Lab Practical #13', 'QR-IT-214-2026-11-17-M', '2026-11-24 08:59:10');
 INSERT INTO sessions (id, class_id, date, session_type, topic, qr_token, created_at) VALUES (59, 4, '2026-11-18', 'Morning', 'Module 5: Core Concepts & Lab Practical #14', 'QR-IT-214-2026-11-18-M', '2026-11-24 08:59:10');
 INSERT INTO sessions (id, class_id, date, session_type, topic, qr_token, created_at) VALUES (60, 4, '2026-11-19', 'Morning', 'Module 5: Core Concepts & Lab Practical #15', 'QR-IT-214-2026-11-19-M', '2026-11-24 08:59:10');
+INSERT INTO sessions (id, class_id, date, session_type, topic, qr_token, created_at) VALUES (61, 11, '2026-11-24', 'Morning', 'Class Session (Morning)', 'ATT-IT-221-2026-11-24-Morning', '2026-11-24 09:00:29');
 
 DROP TABLE IF EXISTS attendance;
 CREATE TABLE attendance (
@@ -224,7 +225,6 @@ CREATE TABLE attendance (
 );
 
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (1, 1, 1, 'present', '', '07:55 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (2, 1, 2, 'absent', 'Unexcused absence', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (3, 1, 3, 'present', '', '07:58 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (4, 1, 4, 'present', '', '07:47 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (5, 1, 5, 'present', '', '07:49 AM', 'qr_code', '2026-11-24 08:59:10');
@@ -234,7 +234,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (9, 1, 9, 'present', '', '07:50 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (10, 1, 10, 'excused', 'Medical note submitted', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (11, 2, 1, 'present', '', '07:54 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (12, 2, 2, 'present', '', '07:58 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (13, 2, 3, 'present', '', '07:45 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (14, 2, 4, 'present', '', '07:55 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (15, 2, 5, 'present', '', '07:49 AM', 'manual', '2026-11-24 08:59:10');
@@ -244,7 +243,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (19, 2, 9, 'present', '', '07:47 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (20, 2, 10, 'present', '', '07:48 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (21, 3, 1, 'present', '', '07:48 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (22, 3, 2, 'absent', 'Unexcused absence', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (23, 3, 3, 'present', '', '07:48 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (24, 3, 4, 'present', '', '07:49 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (25, 3, 5, 'present', '', '07:46 AM', 'qr_code', '2026-11-24 08:59:10');
@@ -254,7 +252,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (29, 3, 9, 'present', '', '07:45 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (30, 3, 10, 'present', '', '07:51 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (31, 4, 1, 'present', '', '07:45 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (32, 4, 2, 'excused', 'Family emergency', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (33, 4, 3, 'present', '', '07:55 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (34, 4, 4, 'late', 'Arrived late to class', '08:17 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (35, 4, 5, 'late', 'Arrived late to class', '08:07 AM', 'manual', '2026-11-24 08:59:10');
@@ -264,7 +261,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (39, 4, 9, 'present', '', '07:58 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (40, 4, 10, 'present', '', '07:54 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (41, 5, 1, 'present', '', '07:51 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (42, 5, 2, 'excused', 'Family emergency', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (43, 5, 3, 'present', '', '07:45 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (44, 5, 4, 'present', '', '07:56 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (45, 5, 5, 'present', '', '07:56 AM', 'qr_code', '2026-11-24 08:59:10');
@@ -274,7 +270,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (49, 5, 9, 'present', '', '07:55 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (50, 5, 10, 'present', '', '07:57 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (51, 6, 1, 'present', '', '07:51 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (52, 6, 2, 'excused', 'Family emergency', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (53, 6, 3, 'present', '', '07:49 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (54, 6, 4, 'present', '', '07:55 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (55, 6, 5, 'present', '', '07:49 AM', 'manual', '2026-11-24 08:59:10');
@@ -284,7 +279,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (59, 6, 9, 'present', '', '07:51 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (60, 6, 10, 'present', '', '07:52 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (61, 7, 1, 'present', '', '07:48 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (62, 7, 2, 'late', 'Traffic congestion', '08:25 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (63, 7, 3, 'excused', 'Medical note submitted', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (64, 7, 4, 'present', '', '07:48 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (65, 7, 5, 'present', '', '07:53 AM', 'qr_code', '2026-11-24 08:59:10');
@@ -294,7 +288,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (69, 7, 9, 'present', '', '07:48 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (70, 7, 10, 'present', '', '07:51 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (71, 8, 1, 'present', '', '07:48 AM', 'manual', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (72, 8, 2, 'present', '', '07:58 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (73, 8, 3, 'present', '', '07:51 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (74, 8, 4, 'present', '', '07:56 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (75, 8, 5, 'late', 'Arrived late to class', '08:10 AM', 'manual', '2026-11-24 08:59:10');
@@ -304,7 +297,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (79, 8, 9, 'present', '', '07:56 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (80, 8, 10, 'present', '', '07:58 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (81, 9, 1, 'present', '', '07:52 AM', 'manual', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (82, 9, 2, 'absent', 'Unexcused absence', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (83, 9, 3, 'present', '', '07:53 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (84, 9, 4, 'absent', 'Absent without prior notice', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (85, 9, 5, 'present', '', '07:54 AM', 'qr_code', '2026-11-24 08:59:10');
@@ -314,7 +306,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (89, 9, 9, 'present', '', '07:57 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (90, 9, 10, 'present', '', '07:57 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (91, 10, 1, 'present', '', '07:57 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (92, 10, 2, 'absent', 'Unexcused absence', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (93, 10, 3, 'present', '', '07:46 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (94, 10, 4, 'present', '', '07:46 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (95, 10, 5, 'present', '', '07:56 AM', 'qr_code', '2026-11-24 08:59:10');
@@ -324,7 +315,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (99, 10, 9, 'present', '', '07:52 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (100, 10, 10, 'present', '', '07:50 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (101, 11, 1, 'present', '', '07:45 AM', 'manual', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (102, 11, 2, 'absent', 'Unexcused absence', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (103, 11, 3, 'present', '', '07:50 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (104, 11, 4, 'late', 'Arrived late to class', '08:14 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (105, 11, 5, 'present', '', '07:58 AM', 'qr_code', '2026-11-24 08:59:10');
@@ -334,7 +324,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (109, 11, 9, 'present', '', '07:51 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (110, 11, 10, 'present', '', '07:49 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (111, 12, 1, 'present', '', '07:52 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (112, 12, 2, 'absent', 'Unexcused absence', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (113, 12, 3, 'present', '', '07:46 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (114, 12, 4, 'present', '', '07:50 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (115, 12, 5, 'present', '', '07:57 AM', 'qr_code', '2026-11-24 08:59:10');
@@ -344,7 +333,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (119, 12, 9, 'excused', 'Medical note submitted', NULL, 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (120, 12, 10, 'present', '', '07:45 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (121, 13, 1, 'present', '', '07:57 AM', 'manual', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (122, 13, 2, 'late', 'Traffic congestion', '08:25 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (123, 13, 3, 'present', '', '07:48 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (124, 13, 4, 'present', '', '07:57 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (125, 13, 5, 'present', '', '07:49 AM', 'manual', '2026-11-24 08:59:10');
@@ -354,7 +342,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (129, 13, 9, 'late', 'Arrived late to class', '08:10 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (130, 13, 10, 'present', '', '07:45 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (131, 14, 1, 'present', '', '07:50 AM', 'manual', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (132, 14, 2, 'late', 'Traffic congestion', '08:25 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (133, 14, 3, 'present', '', '07:54 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (134, 14, 4, 'late', 'Arrived late to class', '08:09 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (135, 14, 5, 'late', 'Arrived late to class', '08:05 AM', 'manual', '2026-11-24 08:59:10');
@@ -364,7 +351,6 @@ INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_tim
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (139, 14, 9, 'present', '', '07:54 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (140, 14, 10, 'present', '', '07:58 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (141, 15, 1, 'present', '', '07:48 AM', 'qr_code', '2026-11-24 08:59:10');
-INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (142, 15, 2, 'late', 'Traffic congestion', '08:25 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (143, 15, 3, 'present', '', '07:52 AM', 'manual', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (144, 15, 4, 'present', '', '07:54 AM', 'qr_code', '2026-11-24 08:59:10');
 INSERT INTO attendance (id, session_id, student_id, status, remark, check_in_time, method, created_at) VALUES (145, 15, 5, 'present', '', '07:55 AM', 'manual', '2026-11-24 08:59:10');

@@ -85,14 +85,14 @@ function handleStaffLogin(req, res) {
     if (!identifier) {
       return res.status(400).json({ 
         success: false, 
-        error: 'Staff ID is required to log in.' 
+        error: 'Staff ID or Email is required to log in.' 
       });
     }
 
     if (!password || !password.trim()) {
       return res.status(401).json({ 
         success: false, 
-        error: 'Password is required. Staff cannot log in without a password.' 
+        error: 'Password is required. Staff and teachers without a designated password cannot log in. (តម្រូវឱ្យមានពាក្យសម្ងាត់ដែលបានកំណត់)' 
       });
     }
 
@@ -105,7 +105,7 @@ function handleStaffLogin(req, res) {
     if (!staff) {
       return res.status(401).json({ 
         success: false, 
-        error: 'Invalid Staff ID. Account does not exist.' 
+        error: 'Account not found. Only pre-configured university Admin and Teacher accounts can access this system. (គណនី ឬអ៊ីមែលនេះមិនទាន់បានកំណត់ក្នុងប្រព័ន្ធទេ)' 
       });
     }
 
@@ -114,7 +114,7 @@ function handleStaffLogin(req, res) {
     if (staff.password_hash !== inputHash) {
       return res.status(401).json({ 
         success: false, 
-        error: 'Incorrect password. Staff cannot log in with invalid credentials.' 
+        error: 'Incorrect password. Please enter the designated password configured for your account. (ពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ)' 
       });
     }
 
@@ -188,6 +188,105 @@ router.post('/change-password', (req, res) => {
     res.json({
       success: true,
       message: 'Password changed successfully! You can now log in with your new password.'
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/auth/staff-list - list all registered staff accounts for admin management
+router.get('/staff-list', (req, res) => {
+  try {
+    const staffList = queryAll(`
+      SELECT id, staff_id, full_name, email, role, department, phone, avatar, created_at 
+      FROM staff 
+      ORDER BY id ASC
+    `);
+    res.json({ success: true, data: staffList });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/auth/create-staff - register a newly authorized staff/teacher account
+router.post('/create-staff', (req, res) => {
+  try {
+    const { staff_id, full_name, email, role, department, phone, password } = req.body;
+
+    if (!staff_id || !full_name || !email || !password) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Staff ID, full name, email, and designated password are all required.' 
+      });
+    }
+
+    // Check if staff_id or email already exists
+    const existing = queryOne(`
+      SELECT id FROM staff WHERE LOWER(staff_id) = LOWER(?) OR LOWER(email) = LOWER(?)
+    `, [staff_id.trim(), email.trim()]);
+
+    if (existing) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Staff ID or Email is already registered in the system.' 
+      });
+    }
+
+    const avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${full_name.replace(/\s+/g, '')}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
+    const hashed = hashPassword(password.trim());
+
+    const result = run(`
+      INSERT INTO staff (staff_id, full_name, email, password_hash, role, department, phone, avatar)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+      staff_id.trim().toUpperCase(),
+      full_name.trim(),
+      email.trim().toLowerCase(),
+      hashed,
+      role || 'teacher',
+      department || 'Information Technology',
+      phone || '',
+      avatar
+    ]);
+
+    const newStaff = queryOne(`
+      SELECT id, staff_id, full_name, email, role, department, phone, avatar 
+      FROM staff WHERE id = ?
+    `, [result.lastInsertRowid]);
+
+    res.status(201).json({
+      success: true,
+      message: `Staff account ${newStaff.full_name} (${newStaff.email}) registered successfully!`,
+      data: newStaff
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/auth/set-staff-password - Admin resets/configures password for a staff member
+router.post('/set-staff-password', (req, res) => {
+  try {
+    const { staff_id, new_password } = req.body;
+
+    if (!staff_id || !new_password || !new_password.trim()) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Staff ID and new designated password are required.' 
+      });
+    }
+
+    const staff = queryOne('SELECT id, full_name FROM staff WHERE staff_id = ? OR id = ?', [staff_id, staff_id]);
+    if (!staff) {
+      return res.status(404).json({ success: false, error: 'Staff account not found.' });
+    }
+
+    const hashed = hashPassword(new_password.trim());
+    run('UPDATE staff SET password_hash = ? WHERE id = ?', [hashed, staff.id]);
+
+    res.json({
+      success: true,
+      message: `Designated password updated successfully for ${staff.full_name}!`
     });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

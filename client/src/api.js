@@ -27,6 +27,17 @@ export const api = {
   }).then(r => r.json()),
 
   getDemoStaff: () => fetch(`${API_BASE}/auth/demo-staff`).then(r => r.json()),
+  getStaffList: () => fetch(`${API_BASE}/auth/staff-list`).then(r => r.json()),
+  createStaff: (data) => fetch(`${API_BASE}/auth/create-staff`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(r => r.json()),
+  setStaffPassword: (data) => fetch(`${API_BASE}/auth/set-staff-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(r => r.json()),
   getDemoStudents: () => fetch(`${API_BASE}/auth/demo-students`).then(r => r.json()),
 
   // Analytics

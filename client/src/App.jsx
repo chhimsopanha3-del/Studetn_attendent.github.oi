@@ -11,6 +11,7 @@ import StudentPortalView from './components/StudentPortalView';
 import StudentPermissionsView from './components/StudentPermissionsView';
 import LoginModal from './components/LoginModal';
 import ChangePasswordModal from './components/ChangePasswordModal';
+import StaffManagementModal from './components/StaffManagementModal';
 import { StudentDetailModal, AddStudentModal, AddClassModal } from './components/Modals';
 import { api } from './api';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
@@ -52,6 +53,7 @@ function AppContent() {
   const [isAddClassOpen, setIsAddClassOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+  const [isStaffManagementOpen, setIsStaffManagementOpen] = useState(false);
   const [classesList, setClassesList] = useState([]);
   const [isReseeding, setIsReseeding] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -141,6 +143,7 @@ function AppContent() {
         onOpenLogin={() => setIsLoginModalOpen(true)}
         onLogout={handleLogout}
         onOpenChangePassword={() => setIsChangePasswordOpen(true)}
+        onOpenStaffManagement={() => setIsStaffManagementOpen(true)}
       />
 
       {/* Main Container */}
@@ -235,6 +238,13 @@ function AppContent() {
         onClose={() => setIsChangePasswordOpen(false)}
         currentUser={currentUser}
         onSuccess={(msg) => showToast(msg)}
+      />
+
+      <StaffManagementModal
+        isOpen={isStaffManagementOpen}
+        onClose={() => setIsStaffManagementOpen(false)}
+        currentUser={currentUser}
+        onToast={(msg) => showToast(msg)}
       />
 
       <StudentDetailModal 
