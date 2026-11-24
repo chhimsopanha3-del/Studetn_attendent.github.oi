@@ -809,7 +809,7 @@ export default function StudentPortalView({ currentUser, onOpenCheckin, onOpenPe
               </div>
               <div>
                 <p className="text-[11px] text-slate-400">Office of the Dean:</p>
-                <p className="font-bold text-slate-800">Dr. Robert Vance</p>
+                <p className="font-bold text-slate-800">Mr. Chhem Sopanha</p>
               </div>
             </div>
 

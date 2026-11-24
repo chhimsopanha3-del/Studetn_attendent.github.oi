@@ -441,7 +441,7 @@ export function AddClassModal({ isOpen, onClose, onCreated }) {
               <input
                 type="text"
                 required
-                placeholder="e.g. Dr. Robert Vance"
+                placeholder="e.g. Mr. Chhem Sopanha"
                 value={teacherName}
                 onChange={(e) => setTeacherName(e.target.value)}
                 className="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"

@@ -301,7 +301,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
                     className="p-2 text-left bg-indigo-50/50 hover:bg-indigo-100/50 rounded-xl border border-indigo-200/60 transition cursor-pointer"
                   >
                     <span className="text-xs font-bold text-indigo-900 block">STAFF-001 (Admin)</span>
-                    <span className="text-[10px] text-indigo-700 font-mono block">Dr. Robert Vance</span>
+                    <span className="text-[10px] text-indigo-700 font-mono block">Mr. Chhem Sopanha</span>
                     <span className="text-[9px] text-slate-500">pw: admin123</span>
                   </button>
 

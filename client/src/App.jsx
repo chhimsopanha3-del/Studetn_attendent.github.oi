@@ -39,7 +39,7 @@ function AppContent() {
       class_code: 'SE-301',
       department: 'Software Engineering',
       room: 'Lab 302 (Building A)',
-      teacher_name: 'Dr. Robert Vance',
+      teacher_name: 'Mr. Chhem Sopanha',
       schedule_time: '08:00 AM - 11:15 AM',
       role: 'student'
     };

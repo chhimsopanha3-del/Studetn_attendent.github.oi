@@ -36,24 +36,24 @@ function seedDatabase() {
     const curriculumClasses = [
       // --- Year 2, Semester 1 ---
       // IT
-      { name: 'Database Management System', code: 'IT-211', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Database Management System', code: 'IT-211', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Mr. Chhem Sopanha', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
       { name: 'Data Communication and Networking', code: 'IT-212', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 401 (Innovation Hub)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
       { name: 'UX and UI Design', code: 'IT-213', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
-      { name: 'Web App Development II', code: 'IT-214', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      { name: 'Web App Development II', code: 'IT-214', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Mr. Chhem Sopanha', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
       { name: 'Chinese Language III', code: 'LANG-211', dept: 'General Education', major: 'Information Technology', yr: 'Year 2', room: 'Room 102 (Building C)', prof: 'Ms. Meili Zhang', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
       { name: 'English Language III', code: 'LANG-212', dept: 'General Education', major: 'Information Technology', yr: 'Year 2', room: 'Room 103 (Building C)', prof: 'Mr. David Miller', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
       // EBS
-      { name: 'Database Management System (EBS)', code: 'EBS-211', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Database Management System (EBS)', code: 'EBS-211', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Mr. Chhem Sopanha', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
       { name: 'Business and Technology', code: 'EBS-212', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Room 204 (Building B)', prof: 'Prof. Sophea Chan', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
       { name: 'UX and UI Design (EBS)', code: 'EBS-213', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
-      { name: 'Web App Development II (EBS)', code: 'EBS-214', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      { name: 'Web App Development II (EBS)', code: 'EBS-214', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Mr. Chhem Sopanha', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
 
       // --- Year 2, Semester 2 ---
       // IT
-      { name: '.NET Technology', code: 'IT-221', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: '.NET Technology', code: 'IT-221', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Mr. Chhem Sopanha', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
       { name: 'Cisco Networking I', code: 'IT-222', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Cisco Lab (Building A)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
       { name: 'Data Structure and Algorithms with C++', code: 'IT-223', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
-      { name: 'Web App Framework', code: 'IT-224', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
+      { name: 'Web App Framework', code: 'IT-224', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Mr. Chhem Sopanha', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
       // EBS
       { name: 'Principle of Modern Marketing', code: 'EBS-221', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Room 201 (Building B)', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
       { name: 'Business Communication and Responsible', code: 'EBS-222', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Room 202 (Building B)', prof: 'Dr. Emily Zhao', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
@@ -61,7 +61,7 @@ function seedDatabase() {
 
       // --- Year 3, Semester 1 ---
       // IT
-      { name: 'Database Administration', code: 'IT-311', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Database Administration', code: 'IT-311', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Lab 302 (Building A)', prof: 'Mr. Chhem Sopanha', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
       { name: 'Cisco Networking II', code: 'IT-312', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Cisco Lab (Building A)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
       { name: 'Java Programming', code: 'IT-313', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
       { name: 'System Analysis and Design', code: 'IT-314', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Room 204 (Building B)', prof: 'Dr. Emily Zhao', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
@@ -74,7 +74,7 @@ function seedDatabase() {
       // IT
       { name: 'Data Science', code: 'IT-321', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'AI Research Center', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
       { name: 'Research Methodology I', code: 'IT-322', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
-      { name: 'Android App Development', code: 'IT-323', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Mobile Lab 301', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'Android App Development', code: 'IT-323', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Mobile Lab 301', prof: 'Mr. Chhem Sopanha', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
       { name: 'Network Administration I', code: 'IT-324', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Lab 401 (Innovation Hub)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
       // EBS
       { name: 'Marketing Management', code: 'EBS-323', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 3', room: 'Room 201 (Building B)', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
@@ -82,7 +82,7 @@ function seedDatabase() {
 
       // --- Year 4, Semester 1 ---
       // IT
-      { name: 'Hybrid App Development', code: 'IT-412', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Mobile Lab 301', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Hybrid App Development', code: 'IT-412', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Mobile Lab 301', prof: 'Mr. Chhem Sopanha', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
       { name: 'Cyber Security', code: 'IT-413', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Security Lab 402', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
       { name: 'Internet of Things (IoT)', code: 'IT-414', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'IoT Maker Space', prof: 'Eng. Alex Seng', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
       { name: 'Network Administration II', code: 'IT-415', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Lab 401 (Innovation Hub)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
@@ -91,7 +91,7 @@ function seedDatabase() {
       { name: 'Global Supplied Chain Management', code: 'EBS-415', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 4', room: 'Room 202 (Building B)', prof: 'Dr. Emily Zhao', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
 
       // --- Year 4, Semester 2 ---
-      { name: 'Management Information System', code: 'IT-421', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'Management Information System', code: 'IT-421', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Lab 302 (Building A)', prof: 'Mr. Chhem Sopanha', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
       { name: 'E-Commerce and Digital Marketing', code: 'EBS-422', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 4', room: 'Innovation Hub', prof: 'Dr. Emily Zhao', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
       { name: 'Machine Learning', code: 'IT-424', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'AI Research Center', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
       { name: 'DevOps & Cloud Deployment', code: 'IT-425', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Cloud Lab 401', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
@@ -264,7 +264,7 @@ function seedDatabase() {
       VALUES (?, ?, ?, ?, ?, ?)
     `);
 
-    insertLeave.run(students[0].id, dates[2], dates[3], 'National Hackathon Competition representation', 'approved', 'Dr. Robert Vance');
+    insertLeave.run(students[0].id, dates[2], dates[3], 'National Hackathon Competition representation', 'approved', 'Mr. Chhem Sopanha');
     insertLeave.run(students[3].id, dates[5], dates[5], 'Medical appointment with physician note', 'approved', 'Dean Office');
     insertLeave.run(students[10].id, dates[8], dates[9], 'Severe fever and recovery', 'approved', 'Prof. Sophea Chan');
     insertLeave.run(students[15].id, dates[dates.length - 1], dates[dates.length - 1], 'Attending sibling graduation ceremony', 'pending', null);
@@ -279,13 +279,13 @@ function seedDatabase() {
 
     insertStaff.run(
       'STAFF-001',
-      'Dr. Robert Vance',
-      'r.vance@usea.edu.kh',
+      'Mr. Chhem Sopanha',
+      'c.sopanha@usea.edu.kh',
       hashPassword('admin123'),
       'admin',
       'Software Engineering',
       '012-888-001',
-      'https://api.dicebear.com/7.x/avataaars/svg?seed=RobertVance&backgroundColor=b6e3f4'
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=ChhemSopanha&backgroundColor=b6e3f4'
     );
     insertStaff.run(
       'STAFF-002',
