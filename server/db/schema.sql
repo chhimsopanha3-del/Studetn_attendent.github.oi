@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS classes (
   name TEXT NOT NULL,
   code TEXT NOT NULL UNIQUE,
   department TEXT NOT NULL DEFAULT 'Computer Science',
+  major TEXT NOT NULL DEFAULT 'Information Technology',
+  year_level TEXT NOT NULL DEFAULT 'Year 2',
   room TEXT NOT NULL DEFAULT 'Lab 101',
   teacher_name TEXT NOT NULL,
   schedule_time TEXT NOT NULL DEFAULT '08:00 AM - 11:15 AM',

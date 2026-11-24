@@ -21,6 +21,14 @@ db.exec('PRAGMA synchronous = NORMAL;');
 const schemaSql = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf-8');
 db.exec(schemaSql);
 
+// Ensure migration columns exist
+try {
+  db.exec("ALTER TABLE classes ADD COLUMN major TEXT DEFAULT 'Information Technology';");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE classes ADD COLUMN year_level TEXT DEFAULT 'Year 2';");
+} catch (e) {}
+
 /**
  * Database helper wrapper providing parameterized helpers
  */

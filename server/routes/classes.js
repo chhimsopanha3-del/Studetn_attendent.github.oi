@@ -74,19 +74,21 @@ router.get('/:id', (req, res) => {
 // POST /api/classes - create new class
 router.post('/', (req, res) => {
   try {
-    const { name, code, department, room, teacher_name, schedule_time, academic_year, semester } = req.body;
+    const { name, code, department, major, year_level, room, teacher_name, schedule_time, academic_year, semester } = req.body;
 
     if (!name || !code || !teacher_name) {
       return res.status(400).json({ success: false, error: 'name, code, and teacher_name are required' });
     }
 
     const result = run(`
-      INSERT INTO classes (name, code, department, room, teacher_name, schedule_time, academic_year, semester)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO classes (name, code, department, major, year_level, room, teacher_name, schedule_time, academic_year, semester)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [
       name,
       code,
-      department || 'Computer Science',
+      department || 'Information Technology',
+      major || 'Information Technology',
+      year_level || 'Year 2',
       room || 'Lab 101',
       teacher_name,
       schedule_time || '08:00 AM - 11:15 AM',
@@ -105,14 +107,26 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   try {
     const classId = req.params.id;
-    const { name, code, department, room, teacher_name, schedule_time, academic_year, semester } = req.body;
+    const { name, code, department, major, year_level, room, teacher_name, schedule_time, academic_year, semester } = req.body;
 
     run(`
       UPDATE classes 
-      SET name = ?, code = ?, department = ?, room = ?, teacher_name = ?, 
+      SET name = ?, code = ?, department = ?, major = ?, year_level = ?, room = ?, teacher_name = ?, 
           schedule_time = ?, academic_year = ?, semester = ?
       WHERE id = ?
-    `, [name, code, department, room, teacher_name, schedule_time, academic_year, semester, classId]);
+    `, [
+      name, 
+      code, 
+      department || 'Information Technology', 
+      major || 'Information Technology', 
+      year_level || 'Year 2', 
+      room, 
+      teacher_name, 
+      schedule_time, 
+      academic_year, 
+      semester, 
+      classId
+    ]);
 
     const updated = queryOne('SELECT * FROM classes WHERE id = ?', [classId]);
     res.json({ success: true, data: updated });

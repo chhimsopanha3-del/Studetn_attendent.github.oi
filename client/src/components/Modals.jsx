@@ -320,8 +320,11 @@ export function AddStudentModal({ isOpen, onClose, onCreated, classes }) {
 export function AddClassModal({ isOpen, onClose, onCreated }) {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
-  const [department, setDepartment] = useState('Computer Science');
-  const [room, setRoom] = useState('Lab 101');
+  const [department, setDepartment] = useState('Information Technology');
+  const [major, setMajor] = useState('Information Technology');
+  const [yearLevel, setYearLevel] = useState('Year 2');
+  const [semester, setSemester] = useState('Semester 1');
+  const [room, setRoom] = useState('Lab 302 (Building A)');
   const [teacherName, setTeacherName] = useState('');
   const [scheduleTime, setScheduleTime] = useState('08:00 AM - 11:15 AM');
   const [saving, setSaving] = useState(false);
@@ -338,6 +341,9 @@ export function AddClassModal({ isOpen, onClose, onCreated }) {
         name,
         code,
         department,
+        major,
+        year_level: yearLevel,
+        semester,
         room,
         teacher_name: teacherName,
         schedule_time: scheduleTime
@@ -381,11 +387,51 @@ export function AddClassModal({ isOpen, onClose, onCreated }) {
               <input
                 type="text"
                 required
-                placeholder="e.g. CS-409"
+                placeholder="e.g. IT-409"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 className="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg p-2.5 font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">Major Program</label>
+              <select
+                value={major}
+                onChange={(e) => {
+                  setMajor(e.target.value);
+                  setDepartment(e.target.value);
+                }}
+                className="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              >
+                <option value="Information Technology">Information Technology (ព័ត៌មានវិទ្យា)</option>
+                <option value="E-Business Systems">E-Business Systems (ប្រព័ន្ធអាជីវកម្មអេឡិចត្រូនិក)</option>
+                <option value="General Education">General Education (ភាសា & ទូទៅ)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">Year & Semester</label>
+              <div className="grid grid-cols-2 gap-1.5">
+                <select
+                  value={yearLevel}
+                  onChange={(e) => setYearLevel(e.target.value)}
+                  className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+                  <option value="Year 2">Year 2</option>
+                  <option value="Year 3">Year 3</option>
+                  <option value="Year 4">Year 4</option>
+                </select>
+                <select
+                  value={semester}
+                  onChange={(e) => setSemester(e.target.value)}
+                  className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+                  <option value="Semester 1">Sem 1</option>
+                  <option value="Semester 2">Sem 2</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -414,25 +460,14 @@ export function AddClassModal({ isOpen, onClose, onCreated }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">Department</label>
-              <input
-                type="text"
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-                className="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">Schedule Time</label>
-              <input
-                type="text"
-                value={scheduleTime}
-                onChange={(e) => setScheduleTime(e.target.value)}
-                className="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-              />
-            </div>
+          <div>
+            <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">Schedule Time</label>
+            <input
+              type="text"
+              value={scheduleTime}
+              onChange={(e) => setScheduleTime(e.target.value)}
+              className="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            />
           </div>
 
           <div className="flex items-center justify-end space-x-2 pt-4">

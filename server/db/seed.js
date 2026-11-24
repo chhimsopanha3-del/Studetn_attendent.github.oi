@@ -17,59 +17,90 @@ function seedDatabase() {
     db.exec('DELETE FROM classes;');
     db.exec('DELETE FROM departments;');
     db.exec('DELETE FROM staff;');
+    try { db.exec('DELETE FROM sqlite_sequence;'); } catch (e) {}
 
     // 1. Departments
     const insertDept = db.prepare('INSERT INTO departments (name, code) VALUES (?, ?)');
     insertDept.run('Faculty of Science and Information Technology', 'FSIT');
+    insertDept.run('Department of Information Technology', 'DIT');
+    insertDept.run('Department of E-Business Systems', 'DEBS');
     insertDept.run('Department of Software Engineering', 'DSE');
-    insertDept.run('Department of Artificial Intelligence', 'DAI');
 
-    // 2. Classes
+    // 2. Classes based on official USEA Curriculum:
+    // "២. កម្មវិធីអប់រំ នៃមុខជំនាញព័ត៌មានវិទ្យា និងមុខជំនាញប្រព័ន្ធអាជីវកម្មអេឡិចត្រូនិក"
     const insertClass = db.prepare(`
-      INSERT INTO classes (name, code, department, room, teacher_name, schedule_time, academic_year, semester)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO classes (name, code, department, major, year_level, room, teacher_name, schedule_time, academic_year, semester)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    insertClass.run(
-      'Full-Stack Web Engineering',
-      'SE-301',
-      'Software Engineering',
-      'Lab 302 (Building A)',
-      'Dr. Robert Vance',
-      '08:00 AM - 11:15 AM',
-      '2024-2025',
-      'Semester 1'
-    );
-    insertClass.run(
-      'Data Structures & Algorithms',
-      'CS-202',
-      'Computer Science',
-      'Room 205 (Building B)',
-      'Prof. Sophea Chan',
-      '01:00 PM - 04:15 PM',
-      '2024-2025',
-      'Semester 1'
-    );
-    insertClass.run(
-      'Cloud Architecture & DevOps',
-      'IT-401',
-      'Information Technology',
-      'Lab 401 (Innovation Hub)',
-      'Eng. Alex Seng',
-      '08:00 AM - 11:15 AM',
-      '2024-2025',
-      'Semester 1'
-    );
-    insertClass.run(
-      'Machine Learning & Data Mining',
-      'AI-405',
-      'Artificial Intelligence',
-      'Lab 105 (AI Research Center)',
-      'Dr. Emily Zhao',
-      '01:00 PM - 04:15 PM',
-      '2024-2025',
-      'Semester 1'
-    );
+    const curriculumClasses = [
+      // --- Year 2, Semester 1 ---
+      // IT
+      { name: 'Database Management System', code: 'IT-211', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Data Communication and Networking', code: 'IT-212', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 401 (Innovation Hub)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      { name: 'UX and UI Design', code: 'IT-213', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Web App Development II', code: 'IT-214', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      { name: 'Chinese Language III', code: 'LANG-211', dept: 'General Education', major: 'Information Technology', yr: 'Year 2', room: 'Room 102 (Building C)', prof: 'Ms. Meili Zhang', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'English Language III', code: 'LANG-212', dept: 'General Education', major: 'Information Technology', yr: 'Year 2', room: 'Room 103 (Building C)', prof: 'Mr. David Miller', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      // EBS
+      { name: 'Database Management System (EBS)', code: 'EBS-211', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Business and Technology', code: 'EBS-212', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Room 204 (Building B)', prof: 'Prof. Sophea Chan', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      { name: 'UX and UI Design (EBS)', code: 'EBS-213', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Web App Development II (EBS)', code: 'EBS-214', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+
+      // --- Year 2, Semester 2 ---
+      // IT
+      { name: '.NET Technology', code: 'IT-221', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'Cisco Networking I', code: 'IT-222', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Cisco Lab (Building A)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
+      { name: 'Data Structure and Algorithms with C++', code: 'IT-223', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'Web App Framework', code: 'IT-224', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 2', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
+      // EBS
+      { name: 'Principle of Modern Marketing', code: 'EBS-221', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Room 201 (Building B)', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'Business Communication and Responsible', code: 'EBS-222', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Room 202 (Building B)', prof: 'Dr. Emily Zhao', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
+      { name: 'Data Structure and Algorithms with C++ (EBS)', code: 'EBS-223', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 2', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+
+      // --- Year 3, Semester 1 ---
+      // IT
+      { name: 'Database Administration', code: 'IT-311', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Cisco Networking II', code: 'IT-312', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Cisco Lab (Building A)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      { name: 'Java Programming', code: 'IT-313', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'System Analysis and Design', code: 'IT-314', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Room 204 (Building B)', prof: 'Dr. Emily Zhao', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      // EBS
+      { name: 'Accounting Information System', code: 'EBS-311', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 3', room: 'Room 202 (Building B)', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Cambodian Business Law', code: 'EBS-312', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 3', room: 'Room 203 (Building B)', prof: 'Dr. Emily Zhao', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      { name: 'Entrepreneurship & Innovation', code: 'EBS-313', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 3', room: 'Innovation Hub', prof: 'Prof. Sophea Chan', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+
+      // --- Year 3, Semester 2 ---
+      // IT
+      { name: 'Data Science', code: 'IT-321', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'AI Research Center', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'Research Methodology I', code: 'IT-322', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Room 205 (Building B)', prof: 'Prof. Sophea Chan', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
+      { name: 'Android App Development', code: 'IT-323', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Mobile Lab 301', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'Network Administration I', code: 'IT-324', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 3', room: 'Lab 401 (Innovation Hub)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
+      // EBS
+      { name: 'Marketing Management', code: 'EBS-323', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 3', room: 'Room 201 (Building B)', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'Project Management', code: 'EBS-324', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 3', room: 'Room 204 (Building B)', prof: 'Prof. Sophea Chan', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
+
+      // --- Year 4, Semester 1 ---
+      // IT
+      { name: 'Hybrid App Development', code: 'IT-412', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Mobile Lab 301', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Cyber Security', code: 'IT-413', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Security Lab 402', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      { name: 'Internet of Things (IoT)', code: 'IT-414', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'IoT Maker Space', prof: 'Eng. Alex Seng', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Network Administration II', code: 'IT-415', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Lab 401 (Innovation Hub)', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+      // EBS
+      { name: 'Artificial Intelligence for Business', code: 'EBS-414', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 4', room: 'AI Center', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 1' },
+      { name: 'Global Supplied Chain Management', code: 'EBS-415', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 4', room: 'Room 202 (Building B)', prof: 'Dr. Emily Zhao', time: '01:00 PM - 04:15 PM', sem: 'Semester 1' },
+
+      // --- Year 4, Semester 2 ---
+      { name: 'Management Information System', code: 'IT-421', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Lab 302 (Building A)', prof: 'Dr. Robert Vance', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'E-Commerce and Digital Marketing', code: 'EBS-422', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 4', room: 'Innovation Hub', prof: 'Dr. Emily Zhao', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
+      { name: 'Machine Learning', code: 'IT-424', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'AI Research Center', prof: 'Dr. Emily Zhao', time: '08:00 AM - 11:15 AM', sem: 'Semester 2' },
+      { name: 'DevOps & Cloud Deployment', code: 'IT-425', dept: 'Information Technology', major: 'Information Technology', yr: 'Year 4', room: 'Cloud Lab 401', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' },
+      { name: 'Cloud Computing for Digital Business', code: 'EBS-425', dept: 'E-Business Systems', major: 'E-Business Systems', yr: 'Year 4', room: 'Cloud Lab 401', prof: 'Eng. Alex Seng', time: '01:00 PM - 04:15 PM', sem: 'Semester 2' }
+    ];
+
+    for (const c of curriculumClasses) {
+      insertClass.run(c.name, c.code, c.dept, c.major, c.yr, c.room, c.prof, c.time, '2024-2025', c.sem);
+    }
 
     const classes = queryAll('SELECT id, name, code FROM classes');
     console.log(` Created ${classes.length} classes`);
@@ -158,6 +189,7 @@ function seedDatabase() {
 
     for (const cls of classes) {
       const classStudents = students.filter(s => s.class_id === cls.id);
+      if (classStudents.length === 0) continue;
 
       // Designate one student in each class to have poor attendance (< 75%) to demonstrate "At-Risk" alerts
       const atRiskStudent = classStudents[1];
